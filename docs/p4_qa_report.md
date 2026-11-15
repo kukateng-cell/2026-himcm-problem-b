@@ -101,3 +101,12 @@ python analysis/qa_check.py                  # 本 QA 的自动扫描
 - **页码**：19 页；目录对齐（3.2–3.7 → 8、4 → 10、4.3 → 11、4.4 → 12、5 → 14、6 → 16、AI → 18、App A → 19）。
 - `analysis/qa_check.py` 对 v1.0 扫描 0 命中。
 
+---
+
+## 8. v1.1（评审 P1 增强）
+
+- **5.2 逐时气象**：828 h/城市（Table 7）；设计日排序在最热 10% 小时复现（PHX rail 全部为 MC61V；HK rail 最热 10% 中 MC37V 82%），HK rail 93% 高峰小时 do-nothing 最优。
+- **5.3 联合不确定性**：1000 次抽样（Table 8）；PHX rail P(MC61V 最优)=68%、P(E61>E37)=68%；HK rail P(MC37V>fan)=98%、P(MC37V>MC61V)=81%、P(none 最优)=35%。
+- **5.4 成本与重叠**：安装+人工使 E 降 0.03–0.06、排名不变，但 HK 站台 do-nothing 反超（0.0925 vs 0.0401）；30% 重叠使 2× Portacool 0.2834→0.1921，不再优于 1×。
+- 全文 19 页，目录不变；`qa_check.py` 0 命中；`submission/` 已同步 v1.1。
+

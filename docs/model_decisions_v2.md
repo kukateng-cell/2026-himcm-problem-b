@@ -85,3 +85,25 @@ v_{eff} = v_{amb} + \kappa\,\frac{Q_{air}}{A_{cov}},\qquad [\kappa]=1
 2. `analysis/make_figures.py` 按新数字重画 6 张图（Fig 2/3/4/5 全部要改）。
 3. 文档：`tables_v2.md`、`data_provenance.md`、`sensitivity_report.md`、`p4_qa_report.md`、README。
 4. 导出 docx/PDF，重排目录，`qa_check.py`，替换 `submission/`。
+
+---
+
+## D12 逐时气象情景（2026-11-15）
+
+- 用工作簿 ERA5 0.25° 格点、2026-06-01 至 08-31 的 11:00–19:00 共 **828 h/城市**，按格点平均生成城市序列；10 m 风速 ×0.75 折算 2 m。
+- 每小时对 4 单位 × 2 场地评分（归一化固定基线），并记录零设备与"最热 10%"子集。
+- 产出：`docs/hourly_scenarios.md`、`analysis/hourly_scenarios.py`。
+
+## D13 联合不确定性（2026-11-15）
+
+- 1000 次联合抽样（seed 20261115）：κ、γ、ε、ΔT_nom、L、r、A_cov、N_eff、水耗、价格；每次重算归一化。
+- 报告 P(最优)、E 的 P5/P50/P95、关键对比概率。
+- 产出：`docs/monte_carlo.md`、`analysis/monte_carlo.py`。
+
+## D14 成本附加与多台重叠（2026-11-15）
+
+- 成本附加：安装 $450（亭）/$900（台），10 年摊销；维护人工 $150/台·年。
+- 重叠：两台并排时有效覆盖降为名义并集的 70%（overlap = 0.30）。
+- 结果：排名不变；HK 站台在附加成本下 do-nothing 反超（0.0925 vs 0.0401）；2× Portacool 在 30% 重叠下 0.2834→0.1921，不再优于 1×（0.2686）。
+- 产出：`docs/p1_scenarios.md`、`analysis/p1_scenarios.py`。
+

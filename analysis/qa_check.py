@@ -4,7 +4,7 @@ import re
 from docx import Document
 
 import os
-DOC = os.environ.get("PAPER", "2026_HiMCM_ProblemB_Full_Paper_v1.0.docx")
+DOC = os.environ.get("PAPER", "2026_HiMCM_ProblemB_Full_Paper_v1.1.docx")
 doc = Document(DOC)
 
 texts = []

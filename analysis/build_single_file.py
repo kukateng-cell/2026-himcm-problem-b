@@ -14,8 +14,8 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.path.join(ROOT, "2026_HiMCM_ProblemB_Full_Paper_v1.0.docx")
-OUT = os.path.join(ROOT, "2026_HiMCM_ProblemB_Full_Paper_v1.0_AllInOne.docx")
+SRC = os.path.join(ROOT, "2026_HiMCM_ProblemB_Full_Paper_v1.1.docx")
+OUT = os.path.join(ROOT, "2026_HiMCM_ProblemB_Full_Paper_v1.1_AllInOne.docx")
 
 
 def set_font(run, size=10, bold=False, italic=False, color=None):

@@ -62,6 +62,7 @@ PROFILES = {
 }
 
 WATER_MODE = "balance"
+WATER_MULT = 1.0
 
 
 def es(T):
@@ -118,7 +119,7 @@ def calc(city, venue, eq, n=1, wetbulb="pressure", eqtable=None):
     rho = c["psurf"] * 100 / (287.05 * (c["T"] + 273.15))
     mda = Q * rho
     Vw_bal = 3600.0 * mda * (CP * dTphys / LV) / RHO_W
-    Vw = Vw_bal if WATER_MODE == "balance" else e["V"]
+    Vw = Vw_bal * WATER_MULT if WATER_MODE == "balance" else e["V"]
     if e["eps"] == 0:
         Vw = 0.0
 
@@ -258,7 +259,7 @@ def write_csv(path, rows, fields):
 
 
 def main():
-    global MODE, THRESH, WATER_MODE
+    global MODE, THRESH, WATER_MODE, WATER_MULT
     ap = argparse.ArgumentParser()
     ap.add_argument("--wetbulb", choices=["pressure", "stull"], default="pressure")
     ap.add_argument("--threshold", type=float, default=30.0)
@@ -266,6 +267,7 @@ def main():
     ap.add_argument("--csv", default="")
     args = ap.parse_args()
     MODE, THRESH, WATER_MODE = args.wetbulb, args.threshold, args.vw
+    WATER_MULT = 1.0
 
     print("=" * 92)
     print("Table 3 - Q2a systems (Phoenix bus shelter, per-venue normalisers)")

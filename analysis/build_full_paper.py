@@ -24,7 +24,7 @@ T6_30 = R.table6(T5, G5, 30.0)
 T5_28, G28 = R.table5_rows("pressure", 28.0, "B")
 T6_28 = R.table6(T5_28, G28, 28.0)
 
-OUT = "2026_HiMCM_ProblemB_Full_Paper_v1.0.docx"
+OUT = "2026_HiMCM_ProblemB_Full_Paper_v1.1.docx"
 
 doc = Document()
 sec = doc.sections[0]
@@ -410,8 +410,29 @@ figure("docs/figures/fig5_gamma_heatmap.png", "Figure 5. γ sweep and weight mat
 para(f"Sensitivity runs hold the per-venue normalisers fixed, so a change in E reflects the parameter rather than a rescaling. The jet-mixing coefficient is the largest single uncertainty on the Hong Kong platform, but it does not flip the rebuilt ranking: at κ = 60 MC37V still leads the fan ({e60_37:.4f} vs {e60_fan:.4f}), because the fan raises felt cooling without lowering the heat-index proxy; at κ = 30 the ordering is unchanged. Using manufacturer water rates instead of the energy balance lowers the Hong Kong MC37V score to {em_37:.4f} and leaves the ordering unchanged. A black-globe offset of +3 K reduces every S_safe by 0.5 and compresses all E scores by about 0.15, which does not reorder the units but weakens any claim of absolute safety. γ, ε, ΔT_nom, L_life, r_om, V_w and A_cov each shift the near-ties by less than 0.05 E-points; the full single-factor table is in docs/sensitivity_report.md.")
 para("The approximate proxy and the fixed design day are the main uncertainties. The 30 °C line is a benchmark, not a certification, and the ranking of near-ties should be read as “within model uncertainty” rather than as a field guarantee.")
 
-h2("5.2 Model Strengths, Limitations and Future Improvements")
+h2("5.2 Hourly Weather Scenarios")
+para("Table 7 repeats the comparison for all 828 peak-window hours of June–August 2026 (ERA5 grid, 11:00–19:00) with the same normalisers. The design-day ranking is reproduced in the hottest decile: Phoenix chooses MC37V at the bus shelter and MC61V on the platform in every hottest hour, while cooler hours close the MC37V–MC61V gap. In Hong Kong the fan dominates the bus shelter (98% of device-hours) and the platform on average hours (80%), but MC37V wins 82% of the hottest platform hours. The do-nothing option wins most Hong Kong platform hours (93%) because the proxy WBGT stays below the reference, which argues for scheduling cooling for heat events rather than continuous summer operation.")
+para("Table 7. Hourly robustness over 828 peak-window hours per city (device winner share).", 8.5, italic=True)
+table(["Venue", "Device winner share", "Hottest 10% winner", "Do-nothing share"], [
+    ["PHX bus", "MC37V 92% / Fan 8%", "MC37V 100%", "0%"],
+    ["PHX rail", "MC37V 67% / MC61V 32% / Fan 2%", "MC61V 100%", "3%"],
+    ["HK bus", "Fan 98% / MC37V 2%", "Fan 84% / MC37V 16%", "0%"],
+    ["HK rail", "Fan 80% / MC37V 18% / MC61V 1%", "MC37V 82% / MC61V 13%", "93%"],
+], widths=[2.4, 6.8, 4.6, 2.6], size=8)
+
+h2("5.3 Joint Uncertainty")
+para("Table 8 reports 1,000 joint draws over κ, γ, ε, ΔT_nom, life, maintenance, coverage area, occupancy, water use and prices, with the normalisers recomputed inside each draw. The full-coverage Phoenix choice is probabilistic rather than certain: MC61V is best in 68% of draws, MC37V in 32%, and E(MC61V) > E(MC37V) in 68% of draws. The Hong Kong platform is more robust among devices — MC37V beats the fan in 98% and MC61V in 81% of draws — but the do-nothing option is best in 35% of draws, so deployment should be conditional on heat events. The bus-shelter choices are the most stable: MC37V 80% in Phoenix, fan 75% in Hong Kong, with Portacool taking the remaining 19% of Phoenix draws.")
+para("Table 8. Joint uncertainty: probability that each option is best (1,000 draws).", 8.5, italic=True)
+table(["Venue", "MC37V", "MC61V", "Portacool", "Fan", "Do nothing"], [
+    ["PHX bus", "80%", "1%", "19%", "0%", "0%"],
+    ["PHX rail", "32%", "68%", "0%", "0%", "0%"],
+    ["HK bus", "25%", "0%", "0%", "75%", "0%"],
+    ["HK rail", "55%", "10%", "0%", "0%", "35%"],
+], widths=[2.4, 2.1, 2.1, 2.4, 2.0, 2.4], size=8)
+
+h2("5.4 Model Strengths, Limitations and Future Improvements")
 para("Strengths: the six-equation chain is transparent; every number comes from one locked table; water is derived from the same energy balance as the temperature drop; the decision score is compared with a do-nothing baseline and separates the whole platform from the waiting zone.")
+para("Two further scenarios close the remaining review items. Adding installation ($450 for a shelter, $900 for a platform, amortised over 10 years) and $150 per unit per year of labour lowers every E by 0.03–0.06 and leaves the unit ranking unchanged, but it makes the do-nothing option preferable on the Hong Kong platform (0.0925 vs 0.0401), reinforcing the heat-event scheduling recommendation. A 30% jet overlap between two units lowers the two-unit scores; 2× Portacool falls from 0.2834 to 0.1921 and no longer beats 1× Portacool (0.2686), so the “two units can pay” result holds only when the units are placed to limit overlap.")
 para("Limitations: the drum fan is a hypothetical benchmark; κ, γ, ε, ΔT_nom, L_life, r_om and N_eff remain assumptions; the heat index is an approximate proxy built from dry- and wet-bulb values with no globe or solar term, so it is not ISO 7243 compliance (CCOHS); the design day is a representative summer day rather than a full time series; and the multi-unit model adds nominal coverage areas rather than modelling the union of overlapping jets. Future work: field calibration of κ and γ, measured water flow, hourly TMY/HKO time series, and a two-unit deployment with independent placement.")
 doc.add_page_break()
 
@@ -422,6 +443,7 @@ para("MEMORANDUM — TO: Chief Operating Officer; FROM: Modelling team; DATE: No
 para(f"Recommendation: size for coverage first, then choose the smallest unit that achieves it, and always compare against doing nothing. The do-nothing baseline scores {nd_E('PHX','bus'):.3f} in Phoenix and {nd_E('HK','bus'):.3f} in Hong Kong; every recommendation below beats it, but the margin in Hong Kong is small and depends on shade.")
 para(f"For Phoenix, deploy 1× Hessaire MC61V per 120 m² waiting zone: φ = {phx61['phi']:.2f}, ΔT_eff = {phx61['dT']:.2f} °C, proxy WBGT = {phx61['wbgt']:.2f} °C, LCC = ${phx61['lcc']:.2f}/station/yr and E = {phx61['E']:.4f}; if capital and water budgets bind and partial coverage is acceptable, 1× MC37V gives E = {phx37['E']:.4f} at ${phx37['lcc']:.2f} for 73% coverage. Do not deploy 2× MC61V: it doubles cost without improving coverage.")
 para(f"For Hong Kong, deploy 1× MC37V on the platform (E = {hk37['E']:.4f}, ${hk37['lcc']:.2f}, φ = {hk37['phi']:.2f}) and pair it with shade or windbreak for the occupants outside the jet; 1× MC61V is the full-coverage alternative (E = {hk61['E']:.4f}, ${hk61['lcc']:.2f}). At 15 m² bus shelters, use 1× drum fan (E = {find(T5,'HK','bus','Fan',1)['E']:.4f} vs {find(T5,'HK','bus','MC37V',1)['E']:.4f}) with a humidity interlock.")
+para("Deployment timing: run cooling on heat-event days rather than continuously; in the hottest decile the Phoenix platform choice switches to MC61V, and most Hong Kong platform hours are already below the reference, so the units should be scheduled by forecast WBGT and reviewed after a season of logged operation.")
 para(f"Network: Phoenix 38 stations × ${phx61['lcc']:.2f} = ${38*phx61['lcc']:,.0f}/yr; Hong Kong 68 stops × ${hk37['lcc']:.2f} = ${68*hk37['lcc']:,.0f}/yr. Action plan: (1) shade and windbreak retrofits first (γ 0.55 → 0.30); (2) humidity interlock at 70–80% RH for bus shelters; (3) meter water on evaporative units; (4) pilot 1× MC61V vs 1× MC37V on two Phoenix platforms; (5) re-check the Hong Kong platform choice after measuring κ on site.")
 para("Table 6c. Memorandum decision table (30 °C).", 8.5, italic=True)
 table(["City", "Venue", "Recommended", "φ", "LCC (USD/yr)", "E", "Do-nothing E"], [

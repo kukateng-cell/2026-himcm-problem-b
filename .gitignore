@@ -1,0 +1,12 @@
+# Scratch extraction / analysis dumps (scripts kept in analysis/)
+_extract/
+
+# Office temp files
+~$*
+*.tmp
+
+# OS / editor
+Thumbs.db
+.DS_Store
+__pycache__/
+*.pyc

@@ -4,17 +4,16 @@ This folder is the **shareable snapshot** of the integrated English paper. It is
 
 ## Files
 
-- `2026_HiMCM_ProblemB_Full_Paper_v0.9.docx` — editable master (15 pages)
-- `2026_HiMCM_ProblemB_Full_Paper_v0.9.pdf` — PDF view (15 pages)
+- `2026_HiMCM_ProblemB_Full_Paper_v0.9.docx` — editable master (18 pages)
+- `2026_HiMCM_ProblemB_Full_Paper_v0.9.pdf` — PDF view (18 pages)
 
 ## Status
 
-- P0–P2 integrated; P4 QA passed for this v0.9 build; T01 review round applied (Section 1 written, two-zone exposure table, fixed-denominator sensitivity).
-- **Not submission-ready yet.** Three pages are titled placeholders:
+- P0–P2 integrated; P4 QA passed for this v0.9 build; T01 review round applied (Section 1 written, two-zone exposure table, fixed-denominator sensitivity); Figures 1–6 generated and embedded.
+- **Not submission-ready yet.** Two pages are titled placeholders:
   - p.2 Summary Sheet
-  - p.13 AI Use Report
-  - p.14 Figures 1–6
-- 15 pages now; expected 17–19 pages after the placeholders are filled (≤ 25-page limit).
+  - p.17 AI Use Report
+- 18 pages now; expected 19–20 pages after the placeholders are filled (≤ 25-page limit).
 
 ## QA
 

@@ -5,6 +5,7 @@ from docx import Document
 from docx.shared import Pt, Cm, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
@@ -107,6 +108,20 @@ def table(headers, rows, widths=None, size=8):
     return t
 
 
+def figure(path, caption, width_cm=15.5):
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.paragraph_format.space_before = Pt(6)
+    p.paragraph_format.space_after = Pt(2)
+    p.add_run().add_picture(path, width=Cm(width_cm))
+    cp = doc.add_paragraph()
+    cp.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    cp.paragraph_format.space_after = Pt(8)
+    r = cp.add_run(caption)
+    set_font(r, 8.5, italic=True)
+    return p
+
+
 def placeholder(title, lines):
     h1(title)
     p = para("[PLACEHOLDER — blank page to be completed]", size=11, italic=True)
@@ -156,16 +171,15 @@ toc = [
     ("   3.5 Annualised Life-Cycle Cost (Eq. 4)", "7"),
     ("   3.6 Water–Carbon Externality (Eq. 5)", "7"),
     ("   3.7 Thermal Safety and Multi-Objective Evaluation (Eq. 6)", "7"),
-    ("4. Model Application (Q2–Q4)", "8"),
-    ("   4.1 Bus Stop Shelter (Q2a)", "8"),
-    ("   4.2 Rail Station and Multi-Unit Scaling (Q2b)", "8"),
-    ("   4.3 Cross-Climate Validation (Q3)", "9"),
-    ("   4.4 Multi-Objective Trade-Offs (Q4)", "9"),
-    ("5. Sensitivity Analysis and Model Evaluation", "10"),
-    ("6. Decision Memorandum, Public Blog and References", "11"),
-    ("AI Use Report", "13"),
-    ("Figures 1–6", "14"),
-    ("Appendix A. Data and Assumption Register", "15"),
+    ("4. Model Application (Q2–Q4)", "9"),
+    ("   4.1 Bus Stop Shelter (Q2a)", "9"),
+    ("   4.2 Rail Station and Multi-Unit Scaling (Q2b)", "9"),
+    ("   4.3 Cross-Climate Validation (Q3)", "10"),
+    ("   4.4 Multi-Objective Trade-Offs (Q4)", "11"),
+    ("5. Sensitivity Analysis and Model Evaluation", "13"),
+    ("6. Decision Memorandum, Public Blog and References", "15"),
+    ("AI Use Report", "17"),
+    ("Appendix A. Data and Assumption Register", "18"),
 ]
 table(["Section", "Page"], [[a, b] for a, b in toc], widths=[13.0, 2.5], size=9)
 para("Page numbers are approximate and will move after the [PLACEHOLDER] pages are filled; update this table at final layout.", 8, italic=True)
@@ -254,7 +268,7 @@ table(["Venue", "A_zone (m²)", "γ", "N_eff", "Basis"], [
 
 h3("3.1.1 Transit Network Basis")
 para("Valley Metro Rail's 2023 NTD profile reports 71 facilities and 29,846 average weekday unlinked trips; the 71 figure is a facility count, not a station count (about 38 stations in 2024), so network costs in Section 6 use 38 stations. The 12th St & Washington/Jefferson profile reports 384 weekday boardings (208 + 176) and 27,462 full-system weekday boardings. Valley Metro's design criteria set a 280 ft (85.3 m) calculated platform with a 16 ft 4 in (4.98 m) minimum centre-platform width, a peak 12-minute boarding/alighting design load at 7 ft² (0.65 m²) per person, and a 1.0% cross slope (Ch. 6.3.1–6.3.5). The South Central Extension/Downtown Hub opened on 7 June 2025 with eight new stations and a 12-minute weekday headway (20 minutes after 19:00; 15/20 minutes on Saturday; 20 minutes on Sunday; 365 days, about 20 h/day). The 2024 count of 38 stations is kept for the network-cost illustration so that station count, tariffs and ridership share the same 2024 basis; the 2026 system has about 46 stations. Hong Kong's Light Rail has 68 unique stops on 11 lines (Siu Hong 7 lines, Tuen Mun Ferry Pier 6), with 439,200 daily journeys in March 2026; five routes (505, 507, 614, 614P, 751) run 6–18 min peak headways. 149 LRVs and 3.90 million daily bus journeys are marked U because the PDF text layer is unreliable and the figures need a page-level check.")
-para("[Figure 1 — PLACEHOLDER: system boundary and Eq. 1→6 coupling. Insert the two-panel schematic described in the figures specification.]", 9, italic=True)
+figure("docs/figures/fig1_system.png", "Figure 1. System boundary and Eq. 1→6 coupling. Left: semi-open venue cross-section with the cold jet, lateral escape γ and coverage φ. Right: the Eq. 1→2→3→(4,5)→6 chain, grouped into thermodynamics, economics/externality and safety/decision.")
 
 h2("3.2 Thermodynamic Cooling Constraint (Eq. 1)")
 para("ΔT_phys = min(ΔT_nom, ε(T_db − T_wb)).   (Eq. 1)")
@@ -313,7 +327,7 @@ table(["Zone", "Persons", "WBGT (°C)", "30 °C reference", "28 °C reference"],
     ["Covered zone (φ)", f"{cov:.0f}", f"{wb_cov:.2f}", "pass", "fail"],
     ["Uncovered zone (1 − φ)", f"{unc:.0f}", f"{wb_unc:.2f}", "fail", "fail"],
 ], widths=[6.4, 2.2, 2.4, 3.2, 3.2], size=8)
-para("[Figure 2 — PLACEHOLDER: Q2a efficiency paradox (left) and Q2b one-vs-two-unit scaling (right).]", 9, italic=True)
+figure("docs/figures/fig2_q2a_q2b.png", "Figure 2. Q2a efficiency paradox and Q2b scaling. Left: Systems A/B/C, bars = ΔT_eff, line = η. Right: 1× vs 2× deployment of MC37V, MC61V and Portacool at a 120 m² Phoenix platform, annotated with E and φ.")
 
 h2("4.3 Cross-Climate Validation (Q3)")
 para("Table 5 gives the 16-scenario matrix. In Phoenix, evaporative cooling remains the best option: MC37V in bus shelters (E = 0.3866) and MC61V in rail stations (0.4093, narrowly above MC37V 0.4051). In Hong Kong, the bus shelter favours the drum fan (0.3090 vs MC37V 0.2840), but the rail station is a near-tie: MC37V 0.2837 vs fan 0.2733. The blanket statement that evaporative cooling fails in humid coastal cities is therefore too strong: the climate effect is technology- and venue-specific, and at the rail station the two options are within 0.01 E-points.")
@@ -325,12 +339,12 @@ for i, r in enumerate(T5, start=1):
 para("Table 5. Sixteen-scenario cross-climate matrix (Set B, 30 °C).", 8.5, italic=True)
 table(["ID", "City", "Venue", "Equipment", "ΔT_eff", "φ", "η", "LCC", "I_env", "WBGT", "E"],
       rows5, widths=[1.1, 1.1, 1.1, 1.6, 1.4, 1.2, 1.5, 1.7, 1.3, 1.3, 1.4], size=7.5)
-para("[Figure 3 — PLACEHOLDER: RH crossover at 41 °C; mark Phoenix 18% and Hong Kong 78%, bus 69.6% and rail 79.7%.]", 9, italic=True)
+figure("docs/figures/fig3_rh_crossover.png", "Figure 3. RH crossover at 41 °C. MC37V in a bus shelter (γ = 0.55) crosses the drum-fan line at about 69.6% RH, the rail station (γ = 0.30) at about 79.7%; dotted lines mark Phoenix (18%) and Hong Kong (78%).")
 
 h2("4.4 Multi-Objective Trade-Offs (Q4)")
 para("On the revised environmental baseline, the fan has the lowest I_env in Phoenix (0.1897) but not in Hong Kong (0.2035 > MC37V 0.1541), because Hong Kong's water stress is low (BWS 0.179) and the fan's higher power dominates the carbon term. Thus 'zero water = lower environmental burden' is false in Hong Kong under Eq. 5; the claim should be limited to water consumption, not to the composite index.")
 para("In Phoenix, MC61V has the highest I_env (0.4831) and water use, and 1× MC61V's LCC is $323.71 vs $200.56 for 1× MC37V. The trade-off is coverage vs cost/water, not cooling magnitude: all three evaporative units deliver 4.39–4.41 °C in bus shelters and 6.53–6.56 °C in rail stations. The memorandum in Section 6.1 turns this into a decision rule.")
-para("[Figure 4 — PLACEHOLDER: LCC vs I_env Pareto bubble plot; mark the 28/30 °C lines and the fan's HK I_env above MC37V.]", 9, italic=True)
+figure("docs/figures/fig4_pareto.png", "Figure 4. LCC vs I_env trade-off. The 16 scenarios collapse to eight distinct cost–externality pairs (bus and rail share LCC and I_env); marker shape = city, colour = WBGT pass/fail at the 30 °C reference. Labels mark the Phoenix points.")
 doc.add_page_break()
 
 # ============================================================ section 5
@@ -361,7 +375,7 @@ table(["Profile", "Phoenix Bus", "Phoenix Rail", "HK Bus", "HK Rail"], t6rows28,
       widths=[4.2, 3.2, 3.2, 3.2, 3.2])
 para("The RH crossover is 69.6% for the 41 °C bus shelter and 79.7% for the rail station (65.6% and 77.0% at 32.5 °C); it should be reported per venue, not as a single universal value. The γ sweep gives ΔT_eff 7.393→2.670 °C and WBGT 25.02→26.76 °C as γ rises 0.20→0.75. The 50% water concession lowers Hong Kong MC37V LCC from $181.36 to $175.25 (E 0.2837→0.2855) and MC61V from $290.75 to $280.25 (E 0.2547→0.2577); it does not change the ranking.")
 para("Every single-factor run holds the baseline Set B normalisers fixed, so a change in E reflects the parameter and not a rescaling of the denominator. The earlier draft recomputed the normalisers inside each scenario: a 30% lifetime reduction that raised annual cost from $323.71 to $375.91 then *raised* E from 0.4093 to 0.4119. With the fixed denominator the same case falls to 0.3942, which is the direction the cost change implies. Scores are therefore comparable across rows; the per-scenario variant is kept only as an internal 'relative ranking within scenario' check, not as evidence of robustness.")
-para("[Figure 5 — PLACEHOLDER: γ sweep of η (left) and the 4×4 decision-weight winner matrix (right).]", 9, italic=True)
+figure("docs/figures/fig5_gamma_heatmap.png", "Figure 5. γ sweep and weight matrix. Left: η vs γ (0.20–0.75) for the Phoenix bus shelter with MC37V; dashed lines at γ = 0.30 and 0.55. Right: best unit and its score for each COO weight profile and city–venue.")
 
 h2("5.2 Model Strengths, Limitations and Future Improvements")
 para("Strengths: the six-equation chain is unchanged, and every number comes from one locked table with explicit normalisation sets; the model separates thermodynamics (Eq. 1–2), spatial coverage (Eq. 3), life-cycle cost (Eq. 4), water–carbon externality (Eq. 5) and thermal safety (Eq. 6).")
@@ -396,7 +410,7 @@ h2("6.2 Public-Facing Blog Post (Q5b)")
 para("Why misting fans feel great in Phoenix—but fail in Hong Kong (and what your commute needs instead).")
 para("In Phoenix's dry 41 °C / 18% air, a direct evaporative cooler can lower the air by about 11 °C and the felt temperature by 4.4–6.5 °C; at a 120 m² rail platform, one MC61V covers the whole platform. In Hong Kong's 32.5 °C / 78% air, the wet-bulb depression shrinks to about 3.3 °C, so the air drops by only about 2.7 °C and the felt temperature by about 2 °C. At an open 15 m² bus shelter, a 10,500 CFM drum fan delivers 2.08 °C of felt cooling at $131.90/yr—27% less than one MC37V ($181.36)—and uses no water; both cover the 15 m² shelter fully.")
 para("At a 120 m² platform the comparison is closer: one MC37V ($181.36, E 0.2837) slightly beats one fan ($131.90, E 0.2733), and two fans ($263.80) score 0.2303, below one MC61V ($290.75, 0.2547). The practical rule is: shade first, windbreak second, then match the machine to the venue—a fan for open bus shelters, a right-sized evaporative unit for platforms where coverage and cost matter.")
-para("[Figure 6 — PLACEHOLDER: public-facing infographic comparing Phoenix and Hong Kong; use the numbers above and avoid equations.]", 9, italic=True)
+figure("docs/figures/fig6_infographic.png", "Figure 6. Public-facing infographic: Phoenix and Hong Kong side by side (felt cooling, water, cost, and the shade → windbreak → machine rule), no equations.")
 
 h2("6.3 References")
 refs = [
@@ -425,21 +439,6 @@ placeholder("AI Use Report", [
     "If no AI tools were used, state that explicitly. Keep it to one page; it does not count toward the 25-page limit.",
 ])
 
-h1("Figures 1–6 (Placeholders)")
-para("Each entry below is a placeholder. Replace it with the actual figure (300 DPI) and keep the caption. The specifications are in the project's figures document.", 9, italic=True)
-figs = [
-    ("Figure 1. System boundary and Eq. 1→6 coupling.", "Two-panel schematic: left, semi-open venue cross-section with cold-jet, warm-air infiltration, lateral escape γ and coverage φ; right, Eq. 1→2→3→(4,5)→6 flow."),
-    ("Figure 2. Q2a efficiency paradox and Q2b scaling.", "Left, dual-axis bars/line for Systems A/B/C (ΔT_eff vs η); right, grouped bars for 1× vs 2× MC37V/MC61V/Portacool."),
-    ("Figure 3. RH crossover.", "ΔT_eff vs RH (10–90%) at 41 °C for MC37V and drum fan; vertical lines at Phoenix 18% and Hong Kong 78%; mark bus 69.6% and rail 79.7%."),
-    ("Figure 4. LCC vs I_env Pareto.", "Scatter of LCC vs I_env for the 16 scenarios; colour by WBGT pass/fail at 30 °C; label EQ-01…04."),
-    ("Figure 5. γ sweep and weight matrix.", "Left, η vs γ (0.20–0.75) with γ=0.30/0.55 lines; right, 4×4 winner matrix for the four COO profiles."),
-    ("Figure 6. Public infographic.", "Two-column comparison (Phoenix vs Hong Kong): felt cooling, water, cost, and the 'shade → windbreak → machine' rule; no equations."),
-]
-for title, spec in figs:
-    p = doc.add_paragraph()
-    r = p.add_run(title); set_font(r, 10, True)
-    r = p.add_run(" " + spec); set_font(r, 9)
-doc.add_page_break()
 
 # ============================================================ appendix
 h1("Appendix A. Data and Assumption Register")

@@ -2,10 +2,10 @@
 
 本仓库收录 **2026 HiMCM Problem B** 的论文草稿、数据包、审阅意见与复算脚本，供团队多人协作使用。
 
-> **状态：P0–P2 完成；P4 已对“英文整合稿 v0.9”通过；P3 的 3 项仍是占位页（Summary、AI Report、Figures 1–6；Section 1 已完成）。**  
+> **状态：P0–P2 完成；P4 已对“英文整合稿 v0.9”通过；P3 只剩 2 项占位（Summary、AI Report；Section 1 与 Figures 1–6 已完成）。**  
 > 审阅发现 5 处会改变结论的问题（Q2b 双机归一化、湿球口径、28°C 阈值、备忘录与 Table 5/6 冲突、68% 交叉点），详见 [`审阅报告_数据与论文一致性.md`](审阅报告_数据与论文一致性.md)。  
 > **P0–P2 产物：** [`docs/model_decisions.md`](docs/model_decisions.md)（D1–D4）、[`docs/tables_v2.md`](docs/tables_v2.md)（锁定数字）、[`docs/data_provenance.md`](docs/data_provenance.md)（来源/假设）、[`docs/sensitivity_report.md`](docs/sensitivity_report.md)（敏感性）、[`paper_v2/Revision_Pack_P0-P2_Bilingual.docx`](paper_v2/Revision_Pack_P0-P2_Bilingual.docx)（中英替换块）。  
-> **整合稿：** [`2026_HiMCM_ProblemB_Full_Paper_v0.9.docx`](2026_HiMCM_ProblemB_Full_Paper_v0.9.docx) / [`.pdf`](2026_HiMCM_ProblemB_Full_Paper_v0.9.pdf)（15 页；Summary、AI Report、Figures 1–6 为占位页；Section 1 已写成完整 Q1 论证）。  
+> **整合稿：** [`2026_HiMCM_ProblemB_Full_Paper_v0.9.docx`](2026_HiMCM_ProblemB_Full_Paper_v0.9.docx) / [`.pdf`](2026_HiMCM_ProblemB_Full_Paper_v0.9.pdf)（18 页；Section 1 为完整 Q1 论证，Figures 1–6 已内嵌；Summary、AI Report 仍为占位页）。  
 > **P4 QA：** [`docs/p4_qa_report.md`](docs/p4_qa_report.md)。  
 > **下一步（P3）：** 填 Summary、Section 1、AI Report、Figures 1–6，再跑 `analysis/qa_check.py` 并更新 TOC 页码。
 
@@ -39,6 +39,7 @@ cd 2026-himcm-problem-b
 | `蒸发冷却研究资料统整_全部保留并新增凤凰城.xlsx` | 数据工作簿（28 个工作表） |
 | `data/site_data/` | **2026-11 场地数据**：港铁轻铁班次/站台实测、Valley Metro 设计标准（424 页）/班距/SCE-DH FAQ |
 | `docs/site_data_2026-11.md` | 场地数据整理与可用性评估（含“改哪些数会翻结论”的复算） |
+| `docs/figures/` | Figure 1–6 的 300 dpi PNG |
 | `审阅报告_数据与论文一致性.md` | 审阅报告（Markdown，含完整 17 行数据对照表、复算表、修改顺序） |
 | `2026_HiMCM_ProblemB_审阅意见_数据与论文一致性.docx` | 审阅报告（Word 版，9 页） |
 | `ROADMAP.md` | 下一步路线图：P0 锁数字 → P1 改结论 → P2 补来源 → P3 补完整性 → P4 QA |
@@ -55,6 +56,8 @@ cd 2026-himcm-problem-b
 | `analysis/recompute.py` | 独立复算脚本（Table 3/4/5/6，支持 --wetbulb/--threshold/--norm） |
 | `analysis/sensitivity.py` | 单因素敏感性（固定基线分母；`--per-scenario` 仅作内部对照） |
 | `analysis/build_sensitivity_md.py` | 生成 `docs/sensitivity_report.md`（固定分母） |
+| `analysis/make_figures.py` | 生成 Figure 1–6（300 dpi，matplotlib） |
+| `analysis/build_single_file.py` | 生成单档交付版 `…_AllInOne.docx` |
 | `analysis/build_tables_md.py` | 生成 `docs/tables_v2.md` |
 | `analysis/build_revision_pack.py` | 生成 `paper_v2/Revision_Pack_P0-P2_Bilingual.docx` |
 | `analysis/build_full_paper.py` | 生成整合论文 `Full_Paper_v0.9.docx` |

@@ -68,3 +68,11 @@ python analysis/qa_check.py                  # 本 QA 的自动扫描
 - **P4 对“英文整合稿 v0.9”通过**：数字、表格/图编号、页数、目录、参考文献均一致；旧数字与旧结论 0 残留。
 - **v0.9 不是最终提交版**：Summary、Section 1、AI Report、Figures 1–6 仍是占位页；补齐后需再跑一次 `qa_check.py` 并把 TOC 页码更新。
 - 中文对照未并入英文提交稿，保留在 `paper_v2/Revision_Pack_P0-P2_Bilingual.docx`；如果要做“中英合一”的团队版，可另建一份双语 master（页数会超过 25 页，仅作内部使用）。
+
+---
+
+## 6. 更新记录
+
+- **2026-11-15 12:26 — Requirement 2a 功率单位注**：按赛事澄清（"Energy Use" 列是功率 kW，写作 kW/hr 有误），在 Table 3 下加 8.5 pt 斜体注：*Note: The “Energy Use” values in Requirement 2a are power ratings in kW (not kWh per hour); annual energy is obtained as P_elec × H_yr.* 该注在 PDF 第 8 页、Table 3 与 Table 3b 之间。数字与公式均未改动（Eq. 4/5 本来就是 kW × h）。
+- 同次重导出后目录两个子条目按实际 PDF 页码修正：3.3 → 7（原记 6）、4.3 → 9（原记 8；加注后该节落到第 9 页）。其余条目不变。
+- PDF 由 WPS Writer（KWPS.Application）重导出，仍为 15 页；改为 WPS 导出是环境原因（沙箱内 Word 无法创建临时工作文件），不是排版决定。若之后改用 Word 导出，请按新 PDF 复核目录页码。

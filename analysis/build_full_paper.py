@@ -151,7 +151,7 @@ toc = [
     ("3. Mathematical Model", "6"),
     ("   3.1 Parameter Baselines", "6"),
     ("   3.2 Thermodynamic Cooling Constraint (Eq. 1)", "6"),
-    ("   3.3 Apparent Temperature and Jet Velocity (Eq. 2)", "6"),
+    ("   3.3 Apparent Temperature and Jet Velocity (Eq. 2)", "7"),
     ("   3.4 Spatial Cooling Efficiency (Eq. 3)", "7"),
     ("   3.5 Annualised Life-Cycle Cost (Eq. 4)", "7"),
     ("   3.6 Water–Carbon Externality (Eq. 5)", "7"),
@@ -159,7 +159,7 @@ toc = [
     ("4. Model Application (Q2–Q4)", "8"),
     ("   4.1 Bus Stop Shelter (Q2a)", "8"),
     ("   4.2 Rail Station and Multi-Unit Scaling (Q2b)", "8"),
-    ("   4.3 Cross-Climate Validation (Q3)", "8"),
+    ("   4.3 Cross-Climate Validation (Q3)", "9"),
     ("   4.4 Multi-Objective Trade-Offs (Q4)", "9"),
     ("5. Sensitivity Analysis and Model Evaluation", "10"),
     ("6. Decision Memorandum, Public Blog and References", "11"),
@@ -285,6 +285,7 @@ para("Table 3. Q2a comparison under Set A (Phoenix bus shelter, 30 °C).", 8.5, 
 table(["System", "P (kW)", "CFM", "ΔT_eff (°C)", "η", "LCC (USD/yr)", "I_env", "E"], [
     [r["eq"], f"{r['P']:.3f}", f"{r['CFM']:.0f}", f"{r['dT']:.3f}", f"{r['eta']:.2f}", f"{r['lcc']:.2f}", f"{r['I_env']:.4f}", f"{r['E']:.4f}"] for r in T3
 ], widths=[1.4, 1.6, 1.4, 2.0, 1.6, 2.4, 1.5, 1.5])
+para("Note: The “Energy Use” values in Requirement 2a are power ratings in kW (not kWh per hour); annual energy is obtained as P_elec × H_yr.", 8.5, italic=True)
 para("Table 3b. Assumed Q2a parameter set (for reproducibility): A 0.25 kW / 2,250 CFM / ΔT_nom 0 / C $250 / L 7 / r 3%; B 1.2 kW / 917 CFM / ΔT_nom 5 / V 15 L/h / C $750 / L 5 / r 8%; C 2.5 kW / 1,031 CFM / ΔT_nom 8 / V 30 L/h / C $1,277 / L 5 / r 8%. A_cov = A_zone = 15 m², γ = 0.55, N_eff = 6.", 8.5)
 
 h2("4.2 Semi-Open Rail Station and Multi-Unit Scaling (Q2b)")

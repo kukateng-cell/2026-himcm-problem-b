@@ -150,7 +150,7 @@ toc = [
     ("2. Assumptions and Justifications", "5"),
     ("3. Mathematical Model", "6"),
     ("   3.1 Parameter Baselines", "6"),
-    ("   3.2 Thermodynamic Cooling Constraint (Eq. 1)", "6"),
+    ("   3.2 Thermodynamic Cooling Constraint (Eq. 1)", "7"),
     ("   3.3 Apparent Temperature and Jet Velocity (Eq. 2)", "7"),
     ("   3.4 Spatial Cooling Efficiency (Eq. 3)", "7"),
     ("   3.5 Annualised Life-Cycle Cost (Eq. 4)", "7"),
@@ -193,7 +193,7 @@ assumptions = [
     ("Assumption 5 — Commercial tariffs and straight-line depreciation.",
      "Capital costs depreciate linearly over L = 5–7 years and annual maintenance is r_om = 3–8% of capital; both are assumptions because the data pack does not publish equipment life or service rates. Energy and water use the latest available local tariffs: Phoenix 2024 (APS E-32 TOU + demand; City water card) and Hong Kong 2026 (CLP; WSD). Years are labelled explicitly and a 2026 Phoenix scenario is tested; the Hong Kong 50% water concession is a separate scenario."),
     ("Assumption 6 — Shaded outdoor WBGT.",
-     "Both venue types provide overhead shading, so WBGT = 0.7 T_wb + 0.3 T_db (ISO 7243 no-solar-load form). The main threshold is 30 °C, the ISO 7243 light-work reference for acclimatised persons; 28 °C is reported as a stricter non-acclimatised sensitivity. The earlier draft's 28 °C 'light 115 W/m²' label mixed two different reference values and is not used."),
+     "Both venue types provide overhead shading, so WBGT = 0.7 T_wb + 0.3 T_db (ISO 7243 no-solar-load form). The assumption matches Phoenix design intent: Valley Metro's criteria make shade the single most important station design element and require at least 50% platform shading between 10:00 and 14:00 on 21 August (Ch. 6.4.1). The main threshold is 30 °C, the ISO 7243 light-work reference for acclimatised persons; 28 °C is reported as a stricter non-acclimatised sensitivity. The earlier draft's 28 °C 'light 115 W/m²' label mixed two different reference values and is not used."),
 ]
 for title, body in assumptions:
     p = doc.add_paragraph()
@@ -208,7 +208,7 @@ table(["Assumption", "Equations", "Basis / status"], [
     ["3 Cold-air escape γ", "2–3, 6", "Urban ventilation ranges; lumped; swept"],
     ["4 Jet velocity and occupancy", "2–3", "Free-jet momentum; κ=45 assumed"],
     ["5 Tariffs and depreciation", "4–5", "APS/CLP/WSD; L, r_om assumed"],
-    ["6 Shaded WBGT", "6", "ISO 7243; 30 °C main, 28 °C sensitivity"],
+    ["6 Shaded WBGT", "6", "ISO 7243; Valley Metro shade criteria; 30 °C main, 28 °C sensitivity"],
 ], widths=[5.6, 3.0, 7.4], size=8)
 doc.add_page_break()
 
@@ -246,11 +246,11 @@ table(["Parameter", "Symbol", "Unit", "Phoenix", "Hong Kong", "Status"], [
 para("Table 2C. Venue geometry and occupancy.", 8.5, italic=True)
 table(["Venue", "A_zone (m²)", "γ", "N_eff", "Basis"], [
     ["Bus shelter (Q2a)", "15", "0.55", "6", "Assumption; typical peak occupancy"],
-    ["Rail platform (Q2b)", "120", "0.30", "45", "Peak occupancy at a major interchange"],
+    ["Rail platform (Q2b)", "120", "0.30", "45", "D/A: HK LRT side platform ≈ 30 m × 4 m; 45 ≈ 24% of 0.65 m²/person design capacity"],
 ], widths=[4.4, 2.6, 1.6, 1.6, 6.0], size=8)
 
 h3("3.1.1 Transit Network Basis")
-para("Valley Metro Rail's 2023 NTD profile reports 71 facilities and 29,846 average weekday unlinked trips; the 71 figure is a facility count, not a station count (about 38 stations in 2024), so network costs in Section 6 use 38 stations. The 12th St & Washington/Jefferson profile reports 384 weekday boardings (208 + 176) and 27,462 full-system weekday boardings. Hong Kong's Light Rail has 68 unique stops on 11 lines (Siu Hong 7 lines, Tuen Mun Ferry Pier 6), with 439,200 daily journeys in March 2026; 149 LRVs and 3.90 million daily bus journeys are marked U because the PDF text layer is unreliable and the figures need a page-level check.")
+para("Valley Metro Rail's 2023 NTD profile reports 71 facilities and 29,846 average weekday unlinked trips; the 71 figure is a facility count, not a station count (about 38 stations in 2024), so network costs in Section 6 use 38 stations. The 12th St & Washington/Jefferson profile reports 384 weekday boardings (208 + 176) and 27,462 full-system weekday boardings. Valley Metro's design criteria set a 280 ft (85.3 m) calculated platform with a 16 ft 4 in (4.98 m) minimum centre-platform width, a peak 12-minute boarding/alighting design load at 7 ft² (0.65 m²) per person, and a 1.0% cross slope (Ch. 6.3.1–6.3.5). The South Central Extension/Downtown Hub opened on 7 June 2025 with eight new stations and a 12-minute weekday headway (20 minutes after 19:00; 15/20 minutes on Saturday; 20 minutes on Sunday; 365 days, about 20 h/day). The 2024 count of 38 stations is kept for the network-cost illustration so that station count, tariffs and ridership share the same 2024 basis; the 2026 system has about 46 stations. Hong Kong's Light Rail has 68 unique stops on 11 lines (Siu Hong 7 lines, Tuen Mun Ferry Pier 6), with 439,200 daily journeys in March 2026; five routes (505, 507, 614, 614P, 751) run 6–18 min peak headways. 149 LRVs and 3.90 million daily bus journeys are marked U because the PDF text layer is unreliable and the figures need a page-level check.")
 para("[Figure 1 — PLACEHOLDER: system boundary and Eq. 1→6 coupling. Insert the two-panel schematic described in the figures specification.]", 9, italic=True)
 
 h2("3.2 Thermodynamic Cooling Constraint (Eq. 1)")
@@ -392,6 +392,8 @@ refs = [
     "Transport Department, HKSAR (2026, March). Monthly Traffic and Transport Digest: Light Rail 439,200 daily journeys; franchised buses 3,902,200 daily.",
     "MTR Corporation (2026). Light Rail routes and stops: 68 unique stops, 11 lines; Siu Hong 7 lines; Tuen Mun Ferry Pier 6 lines.",
     "36-inch drum fan: hypothetical benchmark in this study; specifications are assumptions, not manufacturer data.",
+    "Valley Metro (2020). Design Criteria Manual, May 2020, Ch. 6.0 Station Design, pp. 136–139: 280 ft calculated platform length (260 ft minimum), 16 ft 4 in centre-platform width, 7 ft² per person at the 12-minute peak load, 1.0% cross slope, and shade criteria.",
+    "Valley Metro (2025). South Central Extension/Downtown Hub (SCE/DH) Frequently Asked Questions, April 2025, pp. 1–2, 7: opened 7 June 2025 with eight new stations; 12-minute weekday headway (20 minutes after 7 p.m.), 15/20 minutes on Saturday, 20 minutes on Sunday; 365 days, about 20 hours per day.",
 ]
 for i, ref in enumerate(refs, start=1):
     para(f"{i}. {ref}", 9)

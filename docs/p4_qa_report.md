@@ -20,7 +20,7 @@
 | 7 | 页数 | PDF 转换 | 15 页 ≤ 25 |
 | 8 | 目录页码 | 与 v0.9 PDF 实际页对照 | 已对齐（Summary 2、Sec 1 4、Sec 2 5、Sec 3 6、Sec 4 8、Sec 5 10、Sec 6 11、AI 13、Figures 14、App A 15） |
 | 9 | 关键数字复算 | `analysis/recompute.py` | Table 3/4/5/6 与 `docs/tables_v2.md` 一致 |
-| 10 | 参考文献 | 11 条 | APS/Phoenix 已改 2024；CLP 2026；Aqueduct 0.179；ISO 7243；NTD/Valley Metro |
+| 10 | 参考文献 | 13 条 | APS/Phoenix 已改 2024；CLP 2026；Aqueduct 0.179；ISO 7243；NTD/Valley Metro 2024；Valley Metro 2020 设计标准、2025 SCE/DH FAQ |
 | 11 | 占位页说明 | 检查每个 `[PLACEHOLDER]` 页 | 均有标题 + 写作要点 |
 
 ---
@@ -76,3 +76,4 @@ python analysis/qa_check.py                  # 本 QA 的自动扫描
 - **2026-11-15 12:26 — Requirement 2a 功率单位注**：按赛事澄清（"Energy Use" 列是功率 kW，写作 kW/hr 有误），在 Table 3 下加 8.5 pt 斜体注：*Note: The “Energy Use” values in Requirement 2a are power ratings in kW (not kWh per hour); annual energy is obtained as P_elec × H_yr.* 该注在 PDF 第 8 页、Table 3 与 Table 3b 之间。数字与公式均未改动（Eq. 4/5 本来就是 kW × h）。
 - 同次重导出后目录两个子条目按实际 PDF 页码修正：3.3 → 7（原记 6）、4.3 → 9（原记 8；加注后该节落到第 9 页）。其余条目不变。
 - PDF 由 WPS Writer（KWPS.Application）重导出，仍为 15 页；改为 WPS 导出是环境原因（沙箱内 Word 无法创建临时工作文件），不是排版决定。若之后改用 Word 导出，请按新 PDF 复核目录页码。
+- **2026-11-15 14:34 — 方案 A：场地数据并入正文**：Table 1 第 6 行、Table 2C 的 rail 行、Assumption 6、3.1.1 加入 Valley Metro 2020 设计标准与 2025 SCE/DH FAQ 依据；References 11 → 13 条；站数保留 38（2024）并在 3.1.1 注明 2026 年约 46 站；E 与结论未变（复算见 `docs/site_data_2026-11.md`）。新增文字使 3.2 从第 6 页移到第 7 页，目录已同步。

@@ -2,7 +2,7 @@
 
 > 面向“论文未完成、需要知道先做什么”的团队版计划。  
 > 原则：**先锁数字，再改结论，最后补完整性**；不要一边改模型一边写正文，否则会反复重写。  
-> **进度（2026-11-15）：P0–P2 已完成。** 产物：`docs/model_decisions.md`、`docs/tables_v2.md`、`docs/data_provenance.md`、`docs/sensitivity_report.md`、`docs/numbers_v2.csv`、`paper_v2/Revision_Pack_P0-P2_Bilingual.docx`。**下一步：P3（Section 1 / Summary / Figures / AI 报告）→ P4（QA / 导出）。**
+> **进度（2026-11-15）：P0–P2 完成；P4 已对“英文整合稿 v0.9”通过；P3 的 Summary、Section 1、AI Report、Figures 1–6 仍是占位页。** 产物：`docs/`、`paper_v2/Revision_Pack_P0-P2_Bilingual.docx`、`2026_HiMCM_ProblemB_Full_Paper_v0.9.docx/.pdf`、`docs/p4_qa_report.md`。**下一步：填 4 个占位页 → 再跑 `analysis/qa_check.py` → 更新 TOC 页码 → 导出最终 PDF。**
 
 ---
 

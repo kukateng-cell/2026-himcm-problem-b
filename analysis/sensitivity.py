@@ -1,4 +1,23 @@
+"""Single-factor sensitivity for the 2026 HiMCM Problem B paper.
+
+Fixed-denominator policy (2026-11-15):
+    The Set B normalisers (ΔT_max, LCC_max, E_CO2,max, W_eq,max) are computed
+    ONCE from the baseline scenario and then held fixed for every variation.
+    Recomputing them inside each scenario (the earlier behaviour) lets a cost
+    increase raise E, because the cost row is renormalised against a higher
+    denominator; such scores are not comparable across rows.
+
+    The per-scenario variant is kept only for the internal check
+    "relative ranking within scenario" (--per-scenario).
+
+Run:
+    python analysis/sensitivity.py                 # fixed baseline denominators
+    python analysis/sensitivity.py --per-scenario  # old behaviour, internal only
+"""
+
 import copy
+import sys
+
 import recompute as R
 
 R.MODE = "pressure"
@@ -10,8 +29,10 @@ OPTIONS = [
 ]
 
 
-def metrics():
-    rows, g = R.table4_rows("pressure", R.THRESH)
+def metrics(g=None):
+    """E for the seven options; g=None recomputes normalisers (old behaviour)."""
+    rows, g_calc = R.table4_rows("pressure", R.THRESH)
+    g = g_calc if g is None else g
     out = {}
     for city, eq, n in OPTIONS:
         r = next(x for x in rows if x["city"] == city and x["eq"] == eq and x["n"] == n)
@@ -20,17 +41,17 @@ def metrics():
     return out
 
 
-def apply(fn):
+def apply(fn, g=None):
     eq0, city0, venue0 = copy.deepcopy(R.EQUIPMENT), copy.deepcopy(R.CITY), copy.deepcopy(R.VENUE)
     k0, t0 = R.KAPPA, R.THRESH
     try:
         fn()
-        return metrics()
+        return metrics(g)
     finally:
         R.EQUIPMENT, R.CITY, R.VENUE, R.KAPPA, R.THRESH = eq0, city0, venue0, k0, t0
 
 
-def main():
+def variations():
     def set_eps(v):
         for e in R.EQUIPMENT.values():
             if e["eps"] > 0:
@@ -47,7 +68,7 @@ def main():
             if only is None or e["P"] == only:
                 e[field] *= f
 
-    variations = [
+    return [
         ("epsilon=0.70", lambda: set_eps(0.70)),
         ("epsilon=0.90", lambda: set_eps(0.90)),
         ("dTnom=8.8", lambda: set_dtn(8.8)),
@@ -77,15 +98,22 @@ def main():
         ("threshold=28", lambda: setattr(R, "THRESH", 28.0)),
     ]
 
-    base = metrics()
+
+def main():
+    per_scenario = "--per-scenario" in sys.argv
+    g0 = None
+    if not per_scenario:
+        g0 = R.table4_rows("pressure", R.THRESH)[1]
+
+    base = metrics(g0)
     cols = [("PHX37", ("PHX", "MC37V", 1)), ("PHX61", ("PHX", "MC61V", 1)),
             ("PHX2x37", ("PHX", "MC37V", 2)), ("HK37", ("HK", "MC37V", 1)),
             ("HK61", ("HK", "MC61V", 1)), ("HKfan", ("HK", "Fan", 1)),
             ("HK2fan", ("HK", "Fan", 2))]
     print("%-18s" % "case" + "".join("%9s" % c[0] for c in cols))
     print("%-18s" % "BASE" + "".join("%9.4f" % base[k]["E"] for _, k in cols))
-    for name, fn in variations:
-        m = apply(fn)
+    for name, fn in variations():
+        m = apply(fn, g0)
         print("%-18s" % name + "".join("%9.4f" % m[k]["E"] for _, k in cols))
 
 

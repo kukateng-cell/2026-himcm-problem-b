@@ -9,13 +9,12 @@ This folder is the **shareable snapshot** of the integrated English paper. It is
 
 ## Status
 
-- P0–P2 integrated; P4 QA passed for this v0.9 build.
-- **Not submission-ready yet.** Four pages are titled placeholders:
+- P0–P2 integrated; P4 QA passed for this v0.9 build; T01 review round applied (Section 1 written, two-zone exposure table, fixed-denominator sensitivity).
+- **Not submission-ready yet.** Three pages are titled placeholders:
   - p.2 Summary Sheet
-  - p.4 Section 1 (Q1 — open freezer case)
   - p.13 AI Use Report
   - p.14 Figures 1–6
-- 15 pages now; expected 20–22 pages after the placeholders are filled (≤ 25-page limit).
+- 15 pages now; expected 17–19 pages after the placeholders are filled (≤ 25-page limit).
 
 ## QA
 

@@ -172,11 +172,14 @@ para("Page numbers are approximate and will move after the [PLACEHOLDER] pages a
 doc.add_page_break()
 
 # ============================================================ section 1
-placeholder("1. Understanding the Problem (Q1)", [
-    "Write 1–1.5 pages. Define an open freezer case and explain the quantities that should enter a cooling-efficiency measure: useful cooling delivered to the refrigerated space, cold-air spill, warm-air infiltration, sensible vs latent load, energy use, water use and environmental externalities.",
-    "Argue explicitly that efficiency should not depend on energy alone. Motivate the human-centric metric η (persons·°C/kW) and the six-equation chain used later.",
-    "Link the freezer case to the semi-open transit venue: both pay to cool a space that exchanges air with the outside; the difference is that the freezer's boundary is a door and the shelter's boundary is an open side.",
-])
+h1("1. Understanding the Problem (Q1)")
+para("Consider an open-front freezer in a supermarket. Its job is to hold goods at about −18 °C while its front is open to a 24 °C aisle. The compressor removes the heat that leaks in through the opening; an air curtain, a night cover, or a change of door discipline changes how much of that removed heat actually reaches the goods. Two freezers can draw the same 1.2 kW while one holds its load at temperature and the other spills cold air into the aisle. Comparing only kilowatt-hours would call them equal — or prefer the one that cools nothing, because a case that fails to cool draws less power.")
+para("A defensible cooling-efficiency measure therefore needs four kinds of quantities. First, the useful cooling delivered to the protected space — the heat removed from the goods zone per unit time, not the electricity. Second, the resource paid for — electrical power, and water for evaporative devices, integrated over the operating window. Third, the share of the delivered cooling that stays where it is needed, i.e. the boundary loss at the opening (cold-air spill, warm-air infiltration, radiation). Fourth, who benefits — the number of occupants, or the mass of goods, actually inside the protected envelope. The first two give a ratio; the last two decide whether that ratio describes a real benefit or a leak.")
+para("Energy alone fails on three counts. It ignores the boundary: the same compressor power can deliver different useful cooling depending on how much cold air escapes. It ignores the medium: a fan moves air and can feel cooler while lowering no air temperature at all, whereas an evaporative cooler lowers temperature but adds humidity, and in humid air its useful effect is small. It ignores the beneficiary: cooling an empty platform is not the same service as cooling forty waiting passengers. A measure that cannot separate these cases cannot rank a fan, a small evaporative unit and a large one on the same platform.")
+para("The transit shelter is the same problem with the roles changed. In the freezer, cold is produced inside a box and leaks out through the opening; in the semi-open shelter, cooling is produced inside a roofed space and leaks out through the sides. The opening is the boundary in both cases. The goods become people: what matters is not the air temperature at the nozzle but the apparent temperature experienced by someone waiting, and how many people are inside the cooled jet. The freezer's spoiled goods become the occupant's heat stress; its ice build-up and compressor load become the water and carbon embodied in the cooling.")
+para("This mapping produces the six quantities used in Section 3. Eqs. 1–2 describe how much cooling reaches the zone and how much of it a person actually feels; Eq. 3 divides the covered, occupancy-weighted cooling by electrical power; Eqs. 4–5 price the resources; Eq. 6 adds thermal safety and combines the four objectives. The two headline metrics are related but not interchangeable: η (persons·°C per kW) answers 'how much useful cooling per kilowatt', while E answers 'which deployment is best for the operator'. A unit can be efficient and still be the wrong choice if it covers too little of the platform or costs too much.")
+para("The answer to Q1 is therefore that efficiency should not depend on energy use alone. A cooling system should be judged by the useful cooling it delivers to the protected space per unit of resource, weighted by how much of that space and how many occupants it actually covers, and constrained by thermal safety and the water–carbon externality. The freezer case shows why in the dry: an open case with a failed air curtain is cheap to run and useless. The rest of this paper applies the same logic where the 'goods' are commuters.")
+doc.add_page_break()
 
 # ============================================================ section 2
 h1("2. Assumptions and Justifications")
@@ -275,6 +278,7 @@ para("Two normalisation sets are fixed. Set A (Table 3 only) uses the System C r
 h2("3.7 Thermal Safety and Multi-Objective Evaluation (Eq. 6)")
 para("E = w1·S_safe(WBGT) + w2·S_comf(φ, ΔT_eff) − w3·LCC̃ − w4·I_env.   (Eq. 6)")
 para("WBGT = 0.7 T_wb,zone + 0.3 T_zone; S_safe = max(0, 1 − max(0, WBGT − 30)/6); S_comf = φ·ΔT_eff/ΔT_max; LCC̃ = LCC/LCC_max; baseline weights (w1,w2,w3,w4) = (0.30, 0.30, 0.20, 0.20). The 28 °C non-acclimatised sensitivity replaces 30 in S_safe.")
+para("S_safe is evaluated in the cooled zone — the coverage φ of the waiting population — not for the whole platform. Occupants outside the jet, a share (1 − φ), experience the shaded ambient WBGT; that exposure is reported separately in Section 4.2 instead of being folded into E. E is therefore a unit-ranking score, not a platform-level safety certificate: a claim that the platform passes at 30 °C needs φ = 1, added shade and windbreak, or an explicit statement of the uncovered exposure. The 28 °C case is a stricter reference value applied in the same way.")
 doc.add_page_break()
 
 # ============================================================ section 4
@@ -295,11 +299,25 @@ para("Table 4. One- vs two-unit deployment at a 120 m² rail station (Set B, 30 
 table(["City", "Equipment", "n", "φ", "ΔT_eff (°C)", "LCC (USD/yr)", "I_env", "WBGT (°C)", "E"], [
     [r["city"], r["eq"], r["n"], f"{r['phi']:.4f}", f"{r['dT']:.3f}", f"{r['lcc']:.2f}", f"{r['I_env']:.4f}", f"{r['wbgt']:.2f}", f"{r['E']:.4f}"] for r in T4
 ], widths=[1.2, 1.7, 0.8, 1.5, 1.8, 2.1, 1.5, 1.6, 1.5])
+hk37 = next(r for r in T4 if r["city"] == "HK" and r["eq"] == "MC37V" and r["n"] == 1)
+hk61 = next(r for r in T4 if r["city"] == "HK" and r["eq"] == "MC61V" and r["n"] == 1)
+n_wait = R.VENUE["rail"]["N"]
+cov = hk37["phi"] * n_wait
+unc = (1 - hk37["phi"]) * n_wait
+wb_cov = hk37["wbgt"]
+wb_unc = 0.7 * R.twb(32.5, 78.0, 1000.0, "pressure") + 0.3 * 32.5
+wb_plat = (cov * wb_cov + unc * wb_unc) / n_wait
+para(f"Table 4b makes the coverage assumption explicit for the Hong Kong rail case. With 1× MC37V, φ = {hk37['phi']:.3f}: {cov:.0f} of the {n_wait} waiting occupants are inside the cooled zone (WBGT {wb_cov:.2f} °C) and {unc:.0f} are outside it, where they experience the shaded ambient value of {wb_unc:.2f} °C. The cooled zone passes the 30 °C reference; the uncovered zone does not, so the platform as a whole is not compliant at 30 °C while {unc:.0f} occupants remain outside the jet. At 28 °C neither zone passes. The Hong Kong recommendation is therefore conditional: accept 73% coverage with the uncovered zone above 30 °C, choose 1× MC61V for φ = 1 (WBGT {hk61['wbgt']:.2f} °C at ${hk61['lcc']:.2f}/yr), or add shade and windbreak so that the uncovered zone approaches the shaded ambient. Phoenix partial-coverage cases are less exposed because the ambient shaded WBGT there is {0.7 * R.twb(41.0, 18.0, 950.0, 'pressure') + 0.3 * 41.0:.2f} °C, below both thresholds.")
+para("Table 4b. Covered vs uncovered exposure, Hong Kong rail station, 1× MC37V.", 8.5, italic=True)
+table(["Zone", "Persons", "WBGT (°C)", "30 °C reference", "28 °C reference"], [
+    ["Covered zone (φ)", f"{cov:.0f}", f"{wb_cov:.2f}", "pass", "fail"],
+    ["Uncovered zone (1 − φ)", f"{unc:.0f}", f"{wb_unc:.2f}", "fail", "fail"],
+], widths=[6.4, 2.2, 2.4, 3.2, 3.2], size=8)
 para("[Figure 2 — PLACEHOLDER: Q2a efficiency paradox (left) and Q2b one-vs-two-unit scaling (right).]", 9, italic=True)
 
 h2("4.3 Cross-Climate Validation (Q3)")
 para("Table 5 gives the 16-scenario matrix. In Phoenix, evaporative cooling remains the best option: MC37V in bus shelters (E = 0.3866) and MC61V in rail stations (0.4093, narrowly above MC37V 0.4051). In Hong Kong, the bus shelter favours the drum fan (0.3090 vs MC37V 0.2840), but the rail station is a near-tie: MC37V 0.2837 vs fan 0.2733. The blanket statement that evaporative cooling fails in humid coastal cities is therefore too strong: the climate effect is technology- and venue-specific, and at the rail station the two options are within 0.01 E-points.")
-para("At the 30 °C reference, Phoenix WBGT is 25.3–27.6 °C (pass), Hong Kong evaporative 29.6–29.8 °C (pass) and the fan 30.15 °C (marginally above); at 28 °C all Hong Kong options exceed the limit.")
+para(f"At the 30 °C reference, Phoenix cooled-zone WBGT is 25.3–27.6 °C and the uncovered train-platform zone is {0.7 * R.twb(41.0, 18.0, 950.0, 'pressure') + 0.3 * 41.0:.2f} °C, so the platform-level claim holds in Phoenix. In Hong Kong the cooled zone is 29.6–29.8 °C, but the uncovered share of a partially covered platform sits at {0.7 * R.twb(32.5, 78.0, 1000.0, 'pressure') + 0.3 * 32.5:.2f} °C; 'pass' therefore applies to the cooled zone only, and the full-coverage MC61V case (φ = 1, {next(r for r in T4 if r['city'] == 'HK' and r['eq'] == 'MC61V' and r['n'] == 1)['wbgt']:.2f} °C) is the one that passes platform-wide. At 28 °C every Hong Kong option exceeds the limit in both zones.")
 rows5 = []
 for i, r in enumerate(T5, start=1):
     rows5.append([f"SC-{i:02d}", r["city"], r["venue"], r["eq"], f"{r['dT']:.3f}", f"{r['phi']:.4f}",
@@ -342,11 +360,12 @@ for name in ["Balanced", "Safety", "Cost", "Eco"]:
 table(["Profile", "Phoenix Bus", "Phoenix Rail", "HK Bus", "HK Rail"], t6rows28,
       widths=[4.2, 3.2, 3.2, 3.2, 3.2])
 para("The RH crossover is 69.6% for the 41 °C bus shelter and 79.7% for the rail station (65.6% and 77.0% at 32.5 °C); it should be reported per venue, not as a single universal value. The γ sweep gives ΔT_eff 7.393→2.670 °C and WBGT 25.02→26.76 °C as γ rises 0.20→0.75. The 50% water concession lowers Hong Kong MC37V LCC from $181.36 to $175.25 (E 0.2837→0.2855) and MC61V from $290.75 to $280.25 (E 0.2547→0.2577); it does not change the ranking.")
+para("Every single-factor run holds the baseline Set B normalisers fixed, so a change in E reflects the parameter and not a rescaling of the denominator. The earlier draft recomputed the normalisers inside each scenario: a 30% lifetime reduction that raised annual cost from $323.71 to $375.91 then *raised* E from 0.4093 to 0.4119. With the fixed denominator the same case falls to 0.3942, which is the direction the cost change implies. Scores are therefore comparable across rows; the per-scenario variant is kept only as an internal 'relative ranking within scenario' check, not as evidence of robustness.")
 para("[Figure 5 — PLACEHOLDER: γ sweep of η (left) and the 4×4 decision-weight winner matrix (right).]", 9, italic=True)
 
 h2("5.2 Model Strengths, Limitations and Future Improvements")
 para("Strengths: the six-equation chain is unchanged, and every number comes from one locked table with explicit normalisation sets; the model separates thermodynamics (Eq. 1–2), spatial coverage (Eq. 3), life-cycle cost (Eq. 4), water–carbon externality (Eq. 5) and thermal safety (Eq. 6).")
-para("Limitations: E is a within-set relative score, not a physical quantity; the drum fan is a hypothetical benchmark; the wet bulb is pressure-corrected but still a psychrometric approximation of the natural wet bulb; L_life, r_om, V_w, ε, ΔT_nom, κ, γ and N_eff remain assumptions (Appendix A). Future work: field calibration of κ and γ, measured water flow, hourly TMY/HKO time series, and a two-unit deployment with independent placement (the model assumes both units cover the same area and do not increase v_eff).")
+para("Limitations: E is a within-set relative score, not a physical quantity; the drum fan is a hypothetical benchmark; the wet bulb is pressure-corrected but still a psychrometric approximation of the natural wet bulb, and WBGT is computed from dry- and wet-bulb values with no globe or solar term, so it is an index approximation rather than ISO 7243 compliance (CCOHS); L_life, r_om, V_w, ε, ΔT_nom, κ, γ and N_eff remain assumptions (Appendix A). Future work: field calibration of κ and γ, measured water flow, hourly TMY/HKO time series, and a two-unit deployment with independent placement (the model assumes both units cover the same area and do not increase v_eff).")
 doc.add_page_break()
 
 # ============================================================ section 6
@@ -394,6 +413,7 @@ refs = [
     "36-inch drum fan: hypothetical benchmark in this study; specifications are assumptions, not manufacturer data.",
     "Valley Metro (2020). Design Criteria Manual, May 2020, Ch. 6.0 Station Design, pp. 136–139: 280 ft calculated platform length (260 ft minimum), 16 ft 4 in centre-platform width, 7 ft² per person at the 12-minute peak load, 1.0% cross slope, and shade criteria.",
     "Valley Metro (2025). South Central Extension/Downtown Hub (SCE/DH) Frequently Asked Questions, April 2025, pp. 1–2, 7: opened 7 June 2025 with eight new stations; 12-minute weekday headway (20 minutes after 7 p.m.), 15/20 minutes on Saturday, 20 minutes on Sunday; 365 days, about 20 hours per day.",
+    "CCOHS (accessed 15 November 2026). OSH Answers: Heat Control — WBGT and the assumptions behind it. Canadian Centre for Occupational Health and Safety. https://www.ccohs.ca/oshanswers/phys_agents/heat/heat_control.html",
 ]
 for i, ref in enumerate(refs, start=1):
     para(f"{i}. {ref}", 9)

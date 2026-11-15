@@ -43,17 +43,15 @@ def main():
 
     para = doc.add_paragraph()
     r = para.add_run(
-        "这份单档 = 英文全文（Section 1–6、Table 1–6c、Figure 1–6、Appendix A、References 1–14）"
-        "＋ 尚未填写的部分（下面清单）。占位页仍保留在正文原位，写作要点也在原位。"
+        "这份单档 = 完整英文论文（18 页：Summary、Section 1–6、Figure 1–6、Appendix A、References 1–14）"
+        "＋ 1 页内部清单（下面）。清单外的正文已无占位页。"
     )
     set_font(r, 9.5)
 
     items = [
-        ("Summary Sheet（第 2 页）", "350–450 词：问题、六式模型、3–4 个关键数字（Phoenix 1×MC61V 0.4093；2×MC37V 0.3708；HK 1×MC37V 0.2837 vs 风扇 0.2733）、建议、限制。"),
-        ("AI Use Report（第 17 页）", "工具/模型/版本/日期/用途/2–3 个样例提示/人工核验方式；未用 AI 就明确写“no AI tools”。"),
-        ("封面", "“Team [Team Number]”换成实际队号；删除 “Master draft v0.9 …” 两行草稿标记。"),
-        ("页脚", "目前没有页码；补页码后按新 PDF 重排目录（当前 18 页：1→4、2→5、3→6、3.2→7、4→9、4.3→10、4.4→11、5→13、6→15、AI→17、App A→18）。"),
-        ("交付前", "python analysis/qa_check.py → python analysis/build_full_paper.py → 导出 PDF → 删除本页。"),
+        ("队号", "封面仍是 Team [Team Number]；换成实际队号即可，其余（Summary、AI Report、Figures 1–6、页码、目录）均已完成。"),
+        ("再改正文时", "重跑 analysis/build_full_paper.py → WPS 导出 PDF → 按新 PDF 核一次目录（当前 18 页版已对齐）。"),
+        ("交付前", "python analysis/qa_check.py → 导出 PDF → 删除本页。"),
     ]
     for title, body in items:
         p = doc.add_paragraph(style="List Bullet")

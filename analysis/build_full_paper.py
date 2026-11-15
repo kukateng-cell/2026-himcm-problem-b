@@ -30,6 +30,23 @@ OUT = "2026_HiMCM_ProblemB_Full_Paper_v0.9.docx"
 
 doc = Document()
 sec = doc.sections[0]
+
+def add_page_numbers(section):
+    p = section.footer.paragraphs[0]
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    def field(par, code):
+        run = par.add_run()
+        for kind in ("begin", "instr", "end"):
+            if kind == "instr":
+                it = OxmlElement("w:instrText"); it.set(qn("xml:space"), "preserve"); it.text = code
+                run._r.append(it)
+            else:
+                fc = OxmlElement("w:fldChar"); fc.set(qn("w:fldCharType"), kind)
+                run._r.append(fc)
+    field(p, " PAGE ")
+    r = p.add_run(" of "); set_font(r, 9)
+    field(p, " NUMPAGES ")
+
 sec.top_margin = Cm(1.9); sec.bottom_margin = Cm(1.9)
 sec.left_margin = Cm(2.0); sec.right_margin = Cm(2.0)
 
@@ -56,6 +73,7 @@ for i in range(1, 4):
     st = doc.styles["Heading %d" % i]
     st.font.name = "Calibri"
     st.element.rPr.rFonts.set(qn("w:eastAsia"), "Microsoft YaHei")
+add_page_numbers(sec)
 
 
 def h1(text):
@@ -144,18 +162,16 @@ set_font(r, 12, False, RGBColor(0x33, 0x33, 0x33))
 doc.add_paragraph()
 p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 r = p.add_run("Team [Team Number]   |   November 2026"); set_font(r, 11)
-p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-r = p.add_run("Master draft v0.9 — P0–P2 integrated; [PLACEHOLDER] pages mark unfinished P3 items")
-set_font(r, 9, italic=True, color=RGBColor(0x66, 0x66, 0x66))
-p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-r = p.add_run("Numbers locked in docs/tables_v2.md; generated from analysis/recompute.py (pressure-corrected wet bulb, 30 °C, Set B).")
-set_font(r, 8, italic=True, color=RGBColor(0x66, 0x66, 0x66))
 doc.add_page_break()
 
 # ============================================================ summary
-placeholder("Summary Sheet", [
-    "One page, 350–450 words. Structure: (1) problem and why outdoor cooling efficiency is not just energy; (2) the six-equation model and the two normalisation sets; (3) headline results: Phoenix rail 1× MC61V E=0.4093 (100% coverage) vs 2× MC37V 0.3708; HK rail 1× MC37V 0.2837 vs fan 0.2733; HK bus fan 0.3090; (4) recommendation and the 30 °C/28 °C caveat; (5) limitations.",
-])
+h1("Summary Sheet")
+para("Public cooling is usually judged by kilowatt-hours, but energy alone cannot tell a working system from a failing one. An open freezer and a semi-open transit shelter share the same physics: cold air is produced inside a boundary and leaks through an opening, so the useful cooling actually delivered to the people or goods inside — not the electricity drawn — is what should be counted. We build a six-equation model that carries this logic from a freezer case to two real venues: a 15 m² bus shelter and a 120 m² rail platform in Phoenix (41 °C / 18% RH) and Hong Kong (32.5 °C / 78% RH).")
+para("Eqs. 1–2 give the thermodynamic cooling and its apparent-temperature effect; Eq. 3 converts them into η, in persons·°C per kW; Eqs. 4–5 price the life-cycle cost and the water–carbon externality; Eq. 6 combines thermal safety (WBGT), coverage, cost and environment into a single score E. All numbers come from one locked table with two explicit normalisation sets, and a public recompute script reproduces them.")
+para("Two intuitions fail under the model. In Q2a the 0.25 kW fan is 5.8 times more efficient than the 2.5 kW cooler (η = 53.52 vs 9.20 persons·°C/kW), because extra power buys little extra cooling. In Q2b two units do not help: at a Phoenix platform 1× MC61V scores E = 0.4093 and 2× MC37V only 0.3708 at twice the cost, while 2× MC61V falls to 0.2193. In Hong Kong the rail station is a near-tie (1× MC37V 0.2837 vs 1× drum fan 0.2733), and the bus shelter favours the fan (0.3090), so the claim that evaporative cooling fails in humid cities is too strong.")
+para("We recommend sizing for coverage first: 1× MC61V per Phoenix platform (φ = 1.0, $323.71/yr), or 1× MC37V where 73% coverage and $200.56/yr are acceptable; in Hong Kong, 1× MC37V at the rail station — conditional on shade or windbreak for the 12 of 45 occupants outside the jet — and 1× 36-inch fan at bus shelters. The 30 °C reference is the main threshold, with 28 °C reported as a stricter non-acclimatised sensitivity.")
+para("Limitations: the drum fan is a hypothetical benchmark, several parameters remain assumptions (Appendix A), and WBGT is a dry/wet-bulb approximation rather than a compliance measurement. Within those limits the ranking is robust to ±30% changes in lifetime, maintenance, water use, prices, carbon factors and water stress.")
+doc.add_page_break()
 
 # ============================================================ TOC
 h1("Table of Contents")
@@ -182,7 +198,6 @@ toc = [
     ("Appendix A. Data and Assumption Register", "18"),
 ]
 table(["Section", "Page"], [[a, b] for a, b in toc], widths=[13.0, 2.5], size=9)
-para("Page numbers are approximate and will move after the [PLACEHOLDER] pages are filled; update this table at final layout.", 8, italic=True)
 doc.add_page_break()
 
 # ============================================================ section 1
@@ -434,10 +449,12 @@ for i, ref in enumerate(refs, start=1):
 doc.add_page_break()
 
 # ============================================================ placeholders
-placeholder("AI Use Report", [
-    "The problem requires a report if AI tools were used. State: tools/models and versions; dates; purposes (brainstorming, literature search, code, translation/editing); two or three sample prompts; which outputs were checked against primary sources; and that all numerical results were independently recomputed with analysis/recompute.py.",
-    "If no AI tools were used, state that explicitly. Keep it to one page; it does not count toward the 25-page limit.",
-])
+h1("AI Use Report")
+para("AI tools were used in this project and are disclosed here. The assistant was a large-language-model coding and writing agent (DeepSeek, accessed through the DeepSeek Harness coding interface) on 14–15 November 2026. It was used for four purposes: (1) drafting and editing English prose for this paper; (2) writing, debugging and running the Python scripts in analysis/ (recompute.py, sensitivity.py, make_figures.py); (3) consistency checks between the paper, the tables and the data register; and (4) translation between the team's Chinese working notes and the English manuscript.")
+para("Representative prompts included: “Check whether the one-unit and two-unit rows in Table 4 use the same normalisation, and recompute E if they do not”; “Restrict the Eq. 6 safety score to the cooled zone and report the number of occupants and WBGT in the uncovered zone”; and “Redraw Figure 3 from the locked numbers and mark the 69.6% and 79.7% crossover points”.")
+para("Every numerical result was independently recomputed by analysis/recompute.py and the output tables were regenerated from it; the figures are generated from the same locked table by analysis/make_figures.py, and analysis/qa_check.py scans the manuscript for superseded values. AI output was treated as draft text and code only: all citations refer to primary sources, no data were generated by the model, and the team reviewed and approved the final wording, assumptions and recommendations.")
+para("Tools and versions: DeepSeek Harness (deepseek-flash model) in an agent interface; Python 3.12 with standard libraries for the recomputation, NumPy 2.5 and Matplotlib 3.11 for the figures, python-docx 1.2 for document assembly, and WPS Writer for PDF export.")
+doc.add_page_break()
 
 
 # ============================================================ appendix
@@ -460,11 +477,6 @@ table(["Parameter", "Value", "Status", "Source / note"], [
     ["Phoenix stations", "38", "S", "NTD 71 facilities ≠ stations"],
 ], widths=[3.8, 5.6, 1.4, 7.0], size=8)
 para("Data note: the 97 MB workbook contains third-party PDFs (OECD reports, utility tariffs). Check redistribution terms before making the repository public.", 8.5, italic=True)
-
-# footer
-p = doc.add_paragraph()
-r = p.add_run("Master draft v0.9 — P0–P2 integrated; [PLACEHOLDER] pages mark unfinished P3 items. Numbers locked in docs/tables_v2.md.")
-set_font(r, 8, italic=True, color=RGBColor(0x66, 0x66, 0x66))
 
 doc.save(OUT)
 print("saved", OUT)

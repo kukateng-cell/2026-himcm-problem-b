@@ -9,11 +9,9 @@ This folder is the **shareable snapshot** of the integrated English paper. It is
 
 ## Status
 
-- P0–P2 integrated; P4 QA passed for this v0.9 build; T01 review round applied (Section 1 written, two-zone exposure table, fixed-denominator sensitivity); Figures 1–6 generated and embedded.
-- **Not submission-ready yet.** Two pages are titled placeholders:
-  - p.2 Summary Sheet
-  - p.17 AI Use Report
-- 18 pages now; expected 19–20 pages after the placeholders are filled (≤ 25-page limit).
+- P0–P2 integrated; P4 QA passed; T01 review round applied; Figures 1–6 generated and embedded; Summary (p.2) and AI Use Report (p.17) written.
+- **Text complete at 18 pages** (≤ 25-page limit); footer carries page numbers and the TOC matches this PDF.
+- Only remaining item: fill the team number on the cover (`Team [Team Number]`).
 
 ## QA
 

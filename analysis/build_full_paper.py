@@ -397,14 +397,17 @@ for name in ("Balanced", "Safety", "Cost", "Eco"):
 table(["Profile", "Phoenix bus", "Phoenix rail", "HK bus", "HK rail"], t6rows, widths=[2.4, 3.1, 3.1, 3.0, 3.0], size=8)
 
 t6b = []
-for name in ("Balanced", "Safety", "Cost", "Eco"):
-    row = [name]
-    for c, v in (("PHX", "bus"), ("PHX", "rail"), ("HK", "bus"), ("HK", "rail")):
-        eq, sc = T6_28[(name, c, v)]
-        row.append(f"{eq} ({sc:.3f})")
-    t6b.append(row)
-para("Table 6b. 28 °C non-acclimatised stress test (winners only).", 8.5, italic=True)
-table(["Profile", "Phoenix bus", "Phoenix rail", "HK bus", "HK rail"], t6b, widths=[2.4, 3.1, 3.1, 3.0, 3.0], size=8)
+for label, c, v, eq, n in (
+    ("Phoenix bus — 1× MC37V", "PHX", "bus", "MC37V", 1),
+    ("Phoenix rail — 1× MC61V", "PHX", "rail", "MC61V", 1),
+    ("Hong Kong bus — 1× drum fan", "HK", "bus", "Fan", 1),
+    ("Hong Kong rail — 1× MC37V", "HK", "rail", "MC37V", 1),
+):
+    r = find(T5, c, v, eq, n)
+    share = r["phi"] * (1.0 if r["wbgt"] <= 28.0 else 0.0) + (1 - r["phi"]) * (1.0 if r["wbgt_amb"] <= 28.0 else 0.0)
+    t6b.append([label, f"{r['wbgt']:.2f}", f"{r['wbgt_amb']:.2f}", f"{share:.0%}", "Pass" if share > 0.999 else "Fail"])
+para("Table 6b. 28 °C non-acclimatised exposure check for the recommended options. S_safe is graded, so the 28 °C line is an exposure test rather than a second scoring run: it reports the share of waiting occupants whose zone stays at or below 28 °C.", 8.5, italic=True)
+table(["Recommended option", "Zone WBGT (°C)", "Ambient WBGT (°C)", "Occupants ≤ 28 °C", "Check"], t6b, widths=[4.6, 2.6, 2.8, 3.0, 1.7], size=8)
 
 figure("docs/figures/fig5_gamma_heatmap.png", "Figure 5. γ sweep and weight matrix. Left: η vs γ (0.20–0.75) for the Phoenix bus shelter with MC37V; dashed lines at γ = 0.30 and 0.55. Right: best unit and its score for each COO weight profile and city–venue.")
 para(f"Sensitivity runs hold the per-venue normalisers fixed, so a change in E reflects the parameter rather than a rescaling. The jet-mixing coefficient is the largest single uncertainty on the Hong Kong platform, but it does not flip the rebuilt ranking: at κ = 60 MC37V still leads the fan ({e60_37:.4f} vs {e60_fan:.4f}), because the fan raises felt cooling without lowering the heat-index proxy; at κ = 30 the ordering is unchanged. Using manufacturer water rates instead of the energy balance lowers the Hong Kong MC37V score to {em_37:.4f} and leaves the ordering unchanged. A black-globe offset of +3 K reduces every S_safe by 0.5 and compresses all E scores by about 0.15, which does not reorder the units but weakens any claim of absolute safety. γ, ε, ΔT_nom, L_life, r_om, V_w and A_cov each shift the near-ties by less than 0.05 E-points; the full single-factor table is in docs/sensitivity_report.md.")

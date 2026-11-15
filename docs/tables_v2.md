@@ -82,14 +82,15 @@ E 只用于同场地内比较（bus 与 bus、rail 与 rail），不跨场地比
 | Cost | MC37V (0.2144) | MC37V (0.1520) | Fan (0.0508) | MC37V (-0.0059) |
 | Eco | MC37V (0.2219) | MC37V (0.1595) | MC37V (0.0404) | MC37V (0.0165) |
 
-## Table 6b（28 °C 压力测试）
+## Table 6b（28 °C 非适应人群暴露检验）
 
-| Profile | Phoenix Bus | Phoenix Rail | HK Bus | HK Rail |
-|---|---|---|---|---|
-| Balanced | MC37V (0.4743) | MC61V (0.4026) | Fan (0.1602) | MC37V (0.1005) |
-| Safety | MC37V (0.6009) | MC61V (0.5519) | Fan (0.2013) | MC61V (0.1657) |
-| Cost | MC37V (0.2144) | MC37V (0.1520) | Fan (0.0508) | MC37V (-0.0059) |
-| Eco | MC37V (0.2219) | MC37V (0.1595) | MC37V (0.0404) | MC37V (0.0165) |
+S_safe 为分级函数，28 °C 线按“暴露检验”报告：等待人群中处于 ≤28 °C 区域的占比。
+| 推荐方案 | Zone WBGT (°C) | Ambient WBGT (°C) | 人群 ≤28 °C 占比 | 结果 |
+|---|---:|---:|---:|---|
+| Phoenix bus — 1× MC37V | 26.13 | 27.55 | 100% | 通过 |
+| Phoenix rail — 1× MC61V | 25.33 | 27.55 | 100% | 通过 |
+| Hong Kong bus — 1× drum fan | 30.15 | 30.15 | 0% | 未通过 |
+| Hong Kong rail — 1× MC37V | 29.59 | 30.15 | 0% | 未通过 |
 
 ## 关键对比（30 °C）
 

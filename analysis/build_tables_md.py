@@ -84,16 +84,22 @@ def main():
                 row.append("%s (%.4f)" % (eq, E))
         parts.append("| " + " | ".join(row) + " |")
 
-    parts.append("\n## Table 6b（28 °C 压力测试）\n")
-    parts.append("| Profile | Phoenix Bus | Phoenix Rail | HK Bus | HK Rail |")
-    parts.append("|---|---|---|---|---|")
-    for name in ["Balanced", "Safety", "Cost", "Eco"]:
-        row = [name]
-        for city in ["PHX", "HK"]:
-            for venue in ["bus", "rail"]:
-                eq, E = t6_28[(name, city, venue)]
-                row.append("%s (%.4f)" % (eq, E))
-        parts.append("| " + " | ".join(row) + " |")
+    parts.append("\n## Table 6b（28 °C 非适应人群暴露检验）\n")
+    parts.append("S_safe 为分级函数，28 °C 线按“暴露检验”报告：等待人群中处于 ≤28 °C 区域的占比。")
+    parts.append("| 推荐方案 | Zone WBGT (°C) | Ambient WBGT (°C) | 人群 ≤28 °C 占比 | 结果 |")
+    parts.append("|---|---:|---:|---:|---|")
+    recs = [("Phoenix bus — 1× MC37V", "PHX", "bus", "MC37V", 1),
+            ("Phoenix rail — 1× MC61V", "PHX", "rail", "MC61V", 1),
+            ("Hong Kong bus — 1× drum fan", "HK", "bus", "Fan", 1),
+            ("Hong Kong rail — 1× MC37V", "HK", "rail", "MC37V", 1)]
+    for label, city, venue, eq, n in recs:
+        row = next(r for r in t5 if r["city"] == city and r["venue"] == venue
+                   and r["eq"] == eq and r["n"] == n)
+        share = row["phi"] * (1.0 if row["wbgt"] <= 28.0 else 0.0) + \
+            (1 - row["phi"]) * (1.0 if row["wbgt_amb"] <= 28.0 else 0.0)
+        parts.append("| %s | %.2f | %.2f | %.0f%% | %s |" %
+                     (label, row["wbgt"], row["wbgt_amb"], share * 100,
+                      "通过" if share > 0.999 else "未通过"))
 
     parts.append("\n## 关键对比（30 °C）\n")
     def e(city, eq, n):

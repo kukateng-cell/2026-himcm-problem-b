@@ -43,7 +43,7 @@ def main():
 
     para = doc.add_paragraph()
     r = para.add_run(
-        "这份单档 = 完整英文论文（19 页：Summary、Section 1–6、Figure 1–6、Appendix A、References 1–14）"
+        "这份单档 = 完整英文论文（18 页：Summary、Section 1–6、Figure 1–6、Appendix A、References 1–14）"
         "＋ 1 页内部清单（下面）。清单外的正文已无占位页。"
     )
     set_font(r, 9.5)

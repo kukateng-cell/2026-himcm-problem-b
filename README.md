@@ -37,6 +37,8 @@ cd 2026-himcm-problem-b
 | `2026_HiMCM_ProblemB_Figures_Specification_Bilingual.docx` | Figure 1–6 视觉与内容规格 |
 | `2026_HiMCM_ProblemB_全篇符號說明表與核心邏輯鏈.docx` | 全篇符号表 + 公式 1→6 逻辑链 |
 | `蒸发冷却研究资料统整_全部保留并新增凤凰城.xlsx` | 数据工作簿（28 个工作表） |
+| `data/site_data/` | **2026-11 场地数据**：港铁轻铁班次/站台实测、Valley Metro 设计标准（424 页）/班距/SCE-DH FAQ |
+| `docs/site_data_2026-11.md` | 场地数据整理与可用性评估（含“改哪些数会翻结论”的复算） |
 | `审阅报告_数据与论文一致性.md` | 审阅报告（Markdown，含完整 17 行数据对照表、复算表、修改顺序） |
 | `2026_HiMCM_ProblemB_审阅意见_数据与论文一致性.docx` | 审阅报告（Word 版，9 页） |
 | `ROADMAP.md` | 下一步路线图：P0 锁数字 → P1 改结论 → P2 补来源 → P3 补完整性 → P4 QA |

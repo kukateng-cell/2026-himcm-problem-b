@@ -14,8 +14,8 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.path.join(ROOT, "2026_HiMCM_ProblemB_Full_Paper_v0.9.docx")
-OUT = os.path.join(ROOT, "2026_HiMCM_ProblemB_Full_Paper_v0.9_AllInOne.docx")
+SRC = os.path.join(ROOT, "2026_HiMCM_ProblemB_Full_Paper_v1.0.docx")
+OUT = os.path.join(ROOT, "2026_HiMCM_ProblemB_Full_Paper_v1.0_AllInOne.docx")
 
 
 def set_font(run, size=10, bold=False, italic=False, color=None):
@@ -43,7 +43,7 @@ def main():
 
     para = doc.add_paragraph()
     r = para.add_run(
-        "这份单档 = 完整英文论文（18 页：Summary、Section 1–6、Figure 1–6、Appendix A、References 1–14）"
+        "这份单档 = 完整英文论文（19 页：Summary、Section 1–6、Figure 1–6、Appendix A、References 1–14）"
         "＋ 1 页内部清单（下面）。清单外的正文已无占位页。"
     )
     set_font(r, 9.5)

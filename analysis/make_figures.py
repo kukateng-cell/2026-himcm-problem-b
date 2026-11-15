@@ -265,16 +265,19 @@ def panel(x0, color, title, subtitle, lines):
         ax.text(x0 + 0.35, y - 0.30, small, fontsize=8.6, color="#444444", ha="left", va="center")
         y -= 0.60
 
+water_phx = phx_bus["Vw"] / phx_bus["P"]
+water_hk = hk_bus_37["Vw"] / hk_bus_37["P"]
+ratio = (hk_bus_fan["dT"] / hk_bus_37["dT"] - 1) * 100
 panel(0.15, ORANGE, "Phoenix — dry-hot (41 °C, 18% RH)", "Recommended: 1× MC37V per bus shelter",
-      [("4.39 °C", "effective apparent cooling (ΔT_eff)"),
-       ("26.1 °C", "shaded WBGT, below the 30 °C reference"),
-       ("42 L/kWh", "water per kilowatt-hour of cooling"),
-       ("$201 /yr", "annualised life-cycle cost")])
+      [(f"{phx_bus['dT']:.2f} °C", "effective apparent cooling (ΔT_eff)"),
+       (f"{phx_bus['wbgt']:.1f} °C", "proxy WBGT, below the 30 °C reference"),
+       (f"{water_phx:.0f} L/kWh", "water per kilowatt-hour of electricity"),
+       (f"${phx_bus['lcc']:.0f} /yr", "annualised life-cycle cost")])
 panel(5.05, TEAL, "Hong Kong — humid-hot (32.5 °C, 78% RH)", "Recommended: 1× 36-inch pure fan per bus shelter",
-      [("2.08 °C", "effective apparent cooling (ΔT_eff)"),
-       ("+42%", "more cooling than the evaporative option (1.47 °C)"),
-       ("0 L", "water, versus 42 L/kWh for evaporative cooling"),
-       ("$132 /yr", "annualised life-cycle cost")])
+      [(f"{hk_bus_fan['dT']:.2f} °C", "effective apparent cooling (ΔT_eff)"),
+       (f"+{ratio:.0f}%", f"more cooling than the evaporative option ({hk_bus_37['dT']:.2f} °C)"),
+       ("0 L", f"water, versus {water_hk:.0f} L/kWh for evaporative cooling"),
+       (f"${hk_bus_fan['lcc']:.0f} /yr", "annualised life-cycle cost")])
 ax.text(5.0, 0.02, "Model values at the 30 °C reference; full-coverage and partial-coverage cases differ (see Table 4b).",
         ha="center", va="bottom", fontsize=7.6, style="italic", color="#555555")
 save(fig, "fig6_infographic.png")

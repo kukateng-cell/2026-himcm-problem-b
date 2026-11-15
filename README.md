@@ -2,10 +2,10 @@
 
 本仓库收录 **2026 HiMCM Problem B** 的论文草稿、数据包、审阅意见与复算脚本，供团队多人协作使用。
 
-> **状态：正文完整（18 页）。** P0–P2、P4、P3 全部完成：Summary、Section 1、Figures 1–6、AI Use Report、References 均已就位；页脚有页码，目录对齐。**只剩封面队号 `Team [Team Number]` 待填。**  
+> **状态：v1.0（19 页）——按评审 P0 重建后正文完整。** 面积分离、水-能平衡耗水、零设备基准、分级 WBGT proxy、κ 无量纲、按人数计收益均已落地；Summary、Section 1–6、Figures 1–6、AI Use Report、References 齐备。**只剩封面队号。** 旧版 v0.9 保留作对照。  
 > 审阅发现 5 处会改变结论的问题（Q2b 双机归一化、湿球口径、28°C 阈值、备忘录与 Table 5/6 冲突、68% 交叉点），详见 [`审阅报告_数据与论文一致性.md`](审阅报告_数据与论文一致性.md)。  
 > **P0–P2 产物：** [`docs/model_decisions.md`](docs/model_decisions.md)（D1–D4）、[`docs/tables_v2.md`](docs/tables_v2.md)（锁定数字）、[`docs/data_provenance.md`](docs/data_provenance.md)（来源/假设）、[`docs/sensitivity_report.md`](docs/sensitivity_report.md)（敏感性）、[`paper_v2/Revision_Pack_P0-P2_Bilingual.docx`](paper_v2/Revision_Pack_P0-P2_Bilingual.docx)（中英替换块）。  
-> **整合稿：** [`2026_HiMCM_ProblemB_Full_Paper_v0.9.docx`](2026_HiMCM_ProblemB_Full_Paper_v0.9.docx) / [`.pdf`](2026_HiMCM_ProblemB_Full_Paper_v0.9.pdf)（18 页，完整版：Summary、Section 1–6、Figures 1–6、AI Use Report、Appendix A、References）。  
+> **整合稿：** [`2026_HiMCM_ProblemB_Full_Paper_v0.9.docx`](2026_HiMCM_ProblemB_Full_Paper_v0.9.docx) / [`.pdf`](2026_HiMCM_ProblemB_Full_Paper_v0.9.pdf)（v1.0，19 页：重建模型 + 新表格 + 新图；v0.9 为旧版，仅作对照）。  
 > **P4 QA：** [`docs/p4_qa_report.md`](docs/p4_qa_report.md)。  
 > **下一步（P3）：** 填 Summary、Section 1、AI Report、Figures 1–6，再跑 `analysis/qa_check.py` 并更新 TOC 页码。
 
@@ -46,6 +46,7 @@ cd 2026-himcm-problem-b
 | `analysis/build_figure_spec.py` | 生成上述重绘说明 |
 | `审阅报告_数据与论文一致性.md` | 审阅报告（Markdown，含完整 17 行数据对照表、复算表、修改顺序） |
 | `2026_HiMCM_ProblemB_审阅意见_数据与论文一致性.docx` | 审阅报告（Word 版，9 页） |
+| `docs/model_decisions_v2.md` | **v1.0 模型口径 D7–D11**（面积分离、水-能平衡、零设备基准、WBGT proxy、κ 无量纲） |
 | `ROADMAP.md` | 下一步路线图：P0 锁数字 → P1 改结论 → P2 补来源 → P3 补完整性 → P4 QA |
 | `docs/model_decisions.md` | P0 的 D1–D4 决定、归一化集合、旧→新对照 |
 | `docs/tables_v2.md` | 锁定数字：Table 3/4/5/6（30°C 与 28°C） |

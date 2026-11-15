@@ -2,9 +2,10 @@
 
 本仓库收录 **2026 HiMCM Problem B** 的论文草稿、数据包、审阅意见与复算脚本，供团队多人协作使用。
 
-> **状态：草稿 + 审阅中，不是最终提交版。**  
+> **状态：P0–P2 已完成，P3–P4 待做。**  
 > 审阅发现 5 处会改变结论的问题（Q2b 双机归一化、湿球口径、28°C 阈值、备忘录与 Table 5/6 冲突、68% 交叉点），详见 [`审阅报告_数据与论文一致性.md`](审阅报告_数据与论文一致性.md)。  
-> **下一步计划：** 见 [`ROADMAP.md`](ROADMAP.md)（P0 锁数字 → P1 改结论 → P2 补来源 → P3 补完整性 → P4 QA）。
+> **P0–P2 产物：** [`docs/model_decisions.md`](docs/model_decisions.md)（D1–D4）、[`docs/tables_v2.md`](docs/tables_v2.md)（锁定数字）、[`docs/data_provenance.md`](docs/data_provenance.md)（来源/假设）、[`docs/sensitivity_report.md`](docs/sensitivity_report.md)（敏感性）、[`paper_v2/Revision_Pack_P0-P2_Bilingual.docx`](paper_v2/Revision_Pack_P0-P2_Bilingual.docx)（中英替换块）。  
+> **下一步：** 见 [`ROADMAP.md`](ROADMAP.md)（P3 补完整性 → P4 QA）。
 
 ---
 
@@ -37,7 +38,16 @@ cd 2026-himcm-problem-b
 | `审阅报告_数据与论文一致性.md` | 审阅报告（Markdown，含完整 17 行数据对照表、复算表、修改顺序） |
 | `2026_HiMCM_ProblemB_审阅意见_数据与论文一致性.docx` | 审阅报告（Word 版，9 页） |
 | `ROADMAP.md` | 下一步路线图：P0 锁数字 → P1 改结论 → P2 补来源 → P3 补完整性 → P4 QA |
-| `analysis/recompute.py` | 独立复算脚本（Table 4/5/6） |
+| `docs/model_decisions.md` | P0 的 D1–D4 决定、归一化集合、旧→新对照 |
+| `docs/tables_v2.md` | 锁定数字：Table 3/4/5/6（30°C 与 28°C） |
+| `docs/data_provenance.md` | P2 数据来源/假设登记表（含敏感性） |
+| `docs/sensitivity_report.md` | P2 单因素敏感性、稳健结论、翻盘条件 |
+| `docs/numbers_v2.csv` | 机器可读的锁定数字 |
+| `paper_v2/Revision_Pack_P0-P2_Bilingual.docx` | **P1 中英替换块**：4.1–4.4、5.1–5.2、6.1–6.3 + 附录 |
+| `analysis/recompute.py` | 独立复算脚本（Table 3/4/5/6，支持 --wetbulb/--threshold/--norm） |
+| `analysis/sensitivity.py` | 单因素敏感性 |
+| `analysis/build_tables_md.py` | 生成 `docs/tables_v2.md` |
+| `analysis/build_revision_pack.py` | 生成 `paper_v2/Revision_Pack_P0-P2_Bilingual.docx` |
 | `analysis/README.md` | 复算脚本说明 |
 
 ---

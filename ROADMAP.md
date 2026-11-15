@@ -1,7 +1,8 @@
 # 下一步路线图（ROADMAP）
 
 > 面向“论文未完成、需要知道先做什么”的团队版计划。  
-> 原则：**先锁数字，再改结论，最后补完整性**；不要一边改模型一边写正文，否则会反复重写。
+> 原则：**先锁数字，再改结论，最后补完整性**；不要一边改模型一边写正文，否则会反复重写。  
+> **进度（2026-11-15）：P0–P2 已完成。** 产物：`docs/model_decisions.md`、`docs/tables_v2.md`、`docs/data_provenance.md`、`docs/sensitivity_report.md`、`docs/numbers_v2.csv`、`paper_v2/Revision_Pack_P0-P2_Bilingual.docx`。**下一步：P3（Section 1 / Summary / Figures / AI 报告）→ P4（QA / 导出）。**
 
 ---
 

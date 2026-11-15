@@ -49,6 +49,7 @@ cd 2026-himcm-problem-b
 | `paper_v2/Revision_Pack_P0-P2_Bilingual.docx` | **P1 中英替换块**：4.1–4.4、5.1–5.2、6.1–6.3 + 附录 |
 | `2026_HiMCM_ProblemB_Full_Paper_v0.9.docx` | **整合英文论文 v0.9**（15 页；4 个占位页） |
 | `2026_HiMCM_ProblemB_Full_Paper_v0.9.pdf` | 同上 PDF |
+| `submission/` | **可分享快照**：v0.9 docx + pdf + 状态说明 |
 | `analysis/recompute.py` | 独立复算脚本（Table 3/4/5/6，支持 --wetbulb/--threshold/--norm） |
 | `analysis/sensitivity.py` | 单因素敏感性 |
 | `analysis/build_tables_md.py` | 生成 `docs/tables_v2.md` |

@@ -277,7 +277,7 @@ table(["Parameter", "Symbol", "Unit", "Phoenix", "Hong Kong", "Status"], [
 
 para("Table 2C. Venue geometry and occupancy.", 8.5, italic=True)
 table(["Venue", "A_zone (m²)", "γ", "N_eff", "Basis"], [
-    ["Bus shelter (Q2a)", "15", "0.55", "6", "Assumption; typical peak occupancy"],
+    ["Bus shelter (Q2a)", "15", "0.55", "6", "D/A: 15 m² waiting zone under a 2 m × 10 m canopy (Kyogoku & Takebayashi 2023); 6 occupants assumed"],
     ["Rail platform (Q2b)", "120", "0.30", "45", "D/A: HK LRT side platform ≈ 30 m × 4 m; 45 ≈ 24% of 0.65 m²/person design capacity"],
 ], widths=[4.4, 2.6, 1.6, 1.6, 6.0], size=8)
 
@@ -292,6 +292,7 @@ para("T_wb is solved from the psychrometric relation at surface pressure p_s: e_
 h2("3.3 Apparent Temperature and Jet Velocity Coupling (Eq. 2)")
 para("ΔT_eff = AT(T_db, e_amb, v_amb) − AT(T_zone, e_zone, v_eff),   AT(T,e,v) = T + 0.33e − 0.70v − 4.00.   (Eq. 2)")
 para("T_zone = T_db − (1−γ)ΔT_phys; e_zone = min(e_s(T_zone), e_amb + 0.665(1−γ)ΔT_phys); v_eff = v_amb + κ(Q_air/A_cov), with Q_air = CFM × 1.699/3600 m³/s and κ = 45 s/m.")
+para("The humidity penalty is measured, not hypothetical. Field tests of misting at a semi-open bus stop lowered air temperature by a few tenths of a degree to about 1 °C while adding 0.5–1 g/kg of absolute humidity under low wind (Kyogoku & Takebayashi, 2023); whether that feels cooler depends on the ratio of the two changes, which is exactly what the apparent-temperature form in Eq. 2 evaluates.")
 
 h2("3.4 Unified Spatial Cooling Efficiency (Eq. 3)")
 para("η = (φ · N_eff · ΔT_eff) / (n · P_elec),   φ = min(1, n·A_cov/A_zone).   (Eq. 3)")
@@ -394,7 +395,7 @@ figure("docs/figures/fig5_gamma_heatmap.png", "Figure 5. γ sweep and weight mat
 
 h2("5.2 Model Strengths, Limitations and Future Improvements")
 para("Strengths: the six-equation chain is unchanged, and every number comes from one locked table with explicit normalisation sets; the model separates thermodynamics (Eq. 1–2), spatial coverage (Eq. 3), life-cycle cost (Eq. 4), water–carbon externality (Eq. 5) and thermal safety (Eq. 6).")
-para("Limitations: E is a within-set relative score, not a physical quantity; the drum fan is a hypothetical benchmark; the wet bulb is pressure-corrected but still a psychrometric approximation of the natural wet bulb, and WBGT is computed from dry- and wet-bulb values with no globe or solar term, so it is an index approximation rather than ISO 7243 compliance (CCOHS); L_life, r_om, V_w, ε, ΔT_nom, κ, γ and N_eff remain assumptions (Appendix A). Future work: field calibration of κ and γ, measured water flow, hourly TMY/HKO time series, and a two-unit deployment with independent placement (the model assumes both units cover the same area and do not increase v_eff).")
+para("Limitations: E is a within-set relative score, not a physical quantity; the drum fan is a hypothetical benchmark; the wet bulb is pressure-corrected but still a psychrometric approximation of the natural wet bulb, and WBGT is computed from dry- and wet-bulb values with no globe or solar term, so it is an index approximation rather than ISO 7243 compliance (CCOHS); L_life, r_om, V_w, ε, ΔT_nom, κ, γ and N_eff remain assumptions (Appendix A). Future work: field calibration of κ and γ, measured water flow, hourly TMY/HKO time series, and a two-unit deployment with independent placement (the model assumes both units cover the same area and do not increase v_eff). Independent field tests of misting at a semi-open bus stop report air-temperature reductions of a few tenths of a degree to about 1 °C with 0.5–1 g/kg of added absolute humidity under low wind (Kyogoku & Takebayashi, 2023); that study used mist nozzles rather than a high-airflow evaporative unit and could not measure the perceived (SET*) change, so its magnitudes are not directly comparable, but the humidity penalty is consistent with Eq. 2.")
 doc.add_page_break()
 
 # ============================================================ section 6
@@ -443,6 +444,7 @@ refs = [
     "Valley Metro (2020). Design Criteria Manual, May 2020, Ch. 6.0 Station Design, pp. 136–139: 280 ft calculated platform length (260 ft minimum), 16 ft 4 in centre-platform width, 7 ft² per person at the 12-minute peak load, 1.0% cross slope, and shade criteria.",
     "Valley Metro (2025). South Central Extension/Downtown Hub (SCE/DH) Frequently Asked Questions, April 2025, pp. 1–2, 7: opened 7 June 2025 with eight new stations; 12-minute weekday headway (20 minutes after 7 p.m.), 15/20 minutes on Saturday, 20 minutes on Sunday; 365 days, about 20 hours per day.",
     "CCOHS (accessed 15 November 2026). OSH Answers: Heat Control — WBGT and the assumptions behind it. Canadian Centre for Occupational Health and Safety. https://www.ccohs.ca/oshanswers/phys_agents/heat/heat_control.html",
+    "Kyogoku, S., & Takebayashi, H. (2023). Experimental verification of mist cooling effect in front of air-conditioning condenser unit, open space, and bus stop. Atmosphere, 14(1), 177. https://doi.org/10.3390/atmos14010177",
 ]
 for i, ref in enumerate(refs, start=1):
     para(f"{i}. {ref}", 9)

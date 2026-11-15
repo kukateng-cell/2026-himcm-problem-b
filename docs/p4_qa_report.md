@@ -20,7 +20,7 @@
 | 7 | 页数 | PDF 转换 | 18 页 ≤ 25 |
 | 8 | 目录页码 | 与 v0.9 PDF 实际页对照 | 已对齐（Summary 2、Sec 1 4、Sec 2 5、Sec 3 6、Sec 4 9、Sec 5 13、Sec 6 15、AI 17、App A 18） |
 | 9 | 关键数字复算 | `analysis/recompute.py` | Table 3/4/5/6 与 `docs/tables_v2.md` 一致 |
-| 10 | 参考文献 | 14 条 | APS/Phoenix 已改 2024；CLP 2026；Aqueduct 0.179；ISO 7243；NTD/Valley Metro 2024；Valley Metro 2020 设计标准、2025 SCE/DH FAQ；CCOHS WBGT |
+| 10 | 参考文献 | 15 条 | APS 2024；CLP 2026；Aqueduct 0.179；ISO 7243；NTD/Valley Metro 2024；Valley Metro 2020/2025；CCOHS；Kyogoku & Takebayashi 2023 雾化冷却试验 |
 | 11 | 占位页说明 | 检查每个 `[PLACEHOLDER]` 页 | 无占位页；Summary 与 AI Report 已写成正文 |
 
 ---
@@ -84,3 +84,4 @@ python analysis/qa_check.py                  # 本 QA 的自动扫描
 
 - **2026-11-15 16:00 — 换成最终版 6 张图**：作者按锁定数字重绘（Fig 2 的 2.665/13.33、0.405/0.371/0.409/0.219/0.289/0.253；Fig 3 的 69.6%/79.7%；Fig 4 的 30 °C；Fig 5 的 η 177→64 与 4×4 冠军队；Fig 6 的 26.13 °C/30 °C），逐项核对与 Table 3–6 一致后替换 `docs/figures/*.png` 并重新内嵌。全文仍 18 页，目录页码不变，`qa_check.py` 0 命中。
 
+- **2026-11-15 16:50 — 加入 Kyogoku & Takebayashi (2023) 雾化冷却试验**：作为 Ref. 15；3.3 节加一句“湿度惩罚有实测支持”（公交站低风下空气温降几分之一度至约 1 °C、绝对湿度 +0.5–1 g/kg）；Table 2C 公交站 Basis 注明实测顶棚 2 m × 10 m；5.2 节说明该试验是细雾喷头、非大风量蒸发冷风机，量级不可直接比较。**参数与 E 值不变**；全文仍 18 页，目录不变，`qa_check.py` 0 命中。

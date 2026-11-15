@@ -55,7 +55,9 @@ cd 2026-himcm-problem-b
 | `docs/numbers_v2.csv` | 机器可读的锁定数字 |
 | `docs/p4_qa_report.md` | P4 QA：旧数字残留、表/图编号、页数、TOC、占位页 |
 | `paper_v2/Revision_Pack_P0-P2_Bilingual.docx` | **P1 中英替换块**：4.1–4.4、5.1–5.2、6.1–6.3 + 附录 |
-| `2026_HiMCM_ProblemB_Full_Paper_v0.9.docx` | **整合英文论文 v0.9**（15 页；4 个占位页） |
+| `2026_HiMCM_ProblemB_Full_Paper_v1.0.docx` | **v1.0 重建论文**（19 页，评审 P0 修复后；当前主稿） |
+| `2026_HiMCM_ProblemB_Full_Paper_v1.0.pdf` | v1.0 PDF |
+| `2026_HiMCM_ProblemB_Full_Paper_v0.9.docx` | 旧版 v0.9（仅作对照，已被 v1.0 取代） |
 | `2026_HiMCM_ProblemB_Full_Paper_v0.9.pdf` | 同上 PDF |
 | `submission/` | **可分享快照**：v0.9 docx + pdf + 状态说明 |
 | `analysis/recompute.py` | 独立复算脚本（Table 3/4/5/6，支持 --wetbulb/--threshold/--norm） |

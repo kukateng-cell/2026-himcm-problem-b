@@ -1,8 +1,9 @@
 # 下一步路线图（ROADMAP）
 
-> 面向“论文未完成、需要知道先做什么”的团队版计划。  
-> 原则：**先锁数字，再改结论，最后补完整性**；不要一边改模型一边写正文，否则会反复重写。  
-> **进度（2026-11-15）：P0–P2 完成；P4 已对“英文整合稿 v0.9”通过；P3 的 Summary、Section 1、AI Report、Figures 1–6 仍是占位页。** 产物：`docs/`、`paper_v2/Revision_Pack_P0-P2_Bilingual.docx`、`2026_HiMCM_ProblemB_Full_Paper_v0.9.docx/.pdf`、`docs/p4_qa_report.md`。**下一步：填 4 个占位页 → 再跑 `analysis/qa_check.py` → 更新 TOC 页码 → 导出最终 PDF。**
+> **进度（2026-11-15）：v1.0 已按评审 P0 重建完成（19 页）。**
+> 已修复：站台/候车区面积分离（D7）、水-能平衡耗水（D8）、零设备基准与分级安全分（D9）、WBGT proxy 措辞（D10）、κ 无量纲（D11）、N_eff 进入收益项。
+> 产物：`2026_HiMCM_ProblemB_Full_Paper_v1.0.docx/.pdf`、`docs/model_decisions_v2.md`、`docs/tables_v2.md`、`docs/sensitivity_report.md`。
+> 仅剩：封面队号；可选：推广/推 GitHub、LFS。
 
 ---
 

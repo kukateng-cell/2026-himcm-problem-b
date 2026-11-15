@@ -74,12 +74,12 @@ def main():
                    if E(n, ("HK", "Fan", 1)) > E(n, ("HK", "MC37V", 1))]
 
     lines.append("## 3. 稳健结论（固定分母）\n")
-    lines.append("### 3.1 2 台方案在所有单因素变化下都不占优\n")
+    lines.append("### 3.1 2× MC37V 与 2× 风扇在所有单因素变化下都不占优\n")
     lines.append("- **Phoenix 1× MC61V vs 2× MC37V**：27 个情景中 1× MC61V 全部高于 2× MC37V；最小差距 **+%.3f**（%s：%.4f vs %.4f）。"
                  % (min_phx[1], min_phx[0], E(min_phx[0], ("PHX", "MC61V", 1)), E(min_phx[0], ("PHX", "MC37V", 2))))
     lines.append("- **HK 1× MC37V vs 2× Drum Fan**：全部高于 2× 风扇；最小差距 **+%.3f**（%s）。"
                  % (min_hk[1], min_hk[0]))
-    lines.append("- **结论：** “2 台提升 E” 不成立；全覆盖优先 **1× MC61V**。\n")
+    lines.append("- **结论：** “两台一律更好”不成立；但覆盖缺口大时小设备翻倍可能更优（v1.0：2× Portacool 0.2834 > 1× 0.2686）。全覆盖优先 **1× MC61V**。\n")
 
     lines.append("### 3.2 HK 站台：1× MC37V 与 1× Drum Fan 是接近平手\n")
     lines.append("- 基准：MC37V %.4f vs Fan %.4f（差 %.4f）。" % (base[("HK", "MC37V", 1)]["E"], base[("HK", "Fan", 1)]["E"], base[("HK", "MC37V", 1)]["E"] - base[("HK", "Fan", 1)]["E"]))
@@ -130,7 +130,9 @@ def main():
 
     lines.append("## 6. 与旧版（逐情境重算分母）的差异\n")
     lines.append("- 旧版 `sensitivity.py` 在每个情景里重新计算 ΔT_max/LCC_max/E_CO2,max/W_eq,max，导致“成本上升”时 E 可能反而上升。")
-    lines.append("- 典型例：L_life −30%% 使 PHX 1×61 年成本 $323.71 → **$375.91**；旧版 E 0.4093 → **0.4119**（上升），固定分母后 → **%.4f**（下降，符合成本方向）。" % E("L_life -30%", ("PHX", "MC61V", 1)))
+    lines.append("- 典型例：L_life −30%% 使 PHX 1×61 年成本 $%.2f → **$%.2f**；固定分母 E %.4f → **%.4f**（下降，符合成本方向）。旧版逐情境重算会把 E 抬高。"
+                 % (rows["BASE"][("PHX", "MC61V", 1)]["lcc"], rows["L_life -30%"][("PHX", "MC61V", 1)]["lcc"],
+                    E("BASE", ("PHX", "MC61V", 1)), E("L_life -30%", ("PHX", "MC61V", 1))))
     lines.append("- 旧报告中的全部 E 数值与“稳健性”表述作废；以本表为准（论文 5.1 已同步说明）。")
 
     path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs", "sensitivity_report.md")

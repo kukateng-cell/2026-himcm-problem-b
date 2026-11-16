@@ -103,6 +103,12 @@ r = p.add_run("Team 19362 · 2026-11-16 · v1（方案稿）")
 set_font(r, 10.5, False, RGBColor(0x55, 0x55, 0x55))
 doc.add_page_break()
 
+# ---------------------------------------------------------------- update note
+p = doc.add_paragraph()
+r = p.add_run("更新（2026-11-16 晚）：κ 射流推导、NASA TM 102047 的 flight-effect 横风模型、CBE/OSHA 安全依据与联合水耗区间已并入论文 v1.3（新增 5.6 节与 [16]–[19] 引用）。本文件 2.4 的线性 β 情景保留为备选；正式论文采用 NASA 模型，v≈3.7 m/s 时香港站台风扇反超，Phoenix 推荐不变。")
+set_font(r, 9.5, italic=True)
+p.paragraph_format.space_after = Pt(8)
+
 # ---------------------------------------------------------------- overview
 h1("0. 总览")
 para("这份文件把评审留下的五个问题逐条变成“可执行的方案”：每条给出模型/公式、需要的观测或网页资料、默认参数、对现有排名的影响、论文里怎么写、以及代码接口。所有计算都可在 analysis/structural_checks.py 中复现。")

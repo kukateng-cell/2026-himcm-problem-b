@@ -1,11 +1,11 @@
-# Submission snapshot — v1.2 (2026-11-16)
+# Submission snapshot — v1.3 (2026-11-16)
 
 This folder is the **shareable snapshot** of the integrated English paper. The root files remain the source of truth.
 
 ## Files
 
-- `2026_HiMCM_ProblemB_Full_Paper_v1.1.docx` — editable master (v1.2, 19 pages)
-- `2026_HiMCM_ProblemB_Full_Paper_v1.1.pdf` — PDF view (19 pages)
+- `2026_HiMCM_ProblemB_Full_Paper_v1.1.docx` — editable master (v1.3, 20 pages)
+- `2026_HiMCM_ProblemB_Full_Paper_v1.1.pdf` — PDF view (20 pages)
 - `2026_HiMCM_ProblemB_Full_Paper_v1.1_AllInOne.docx` — paper + internal checklist page (19 pages; delete the checklist page before submission)
 
 ## What changed from v0.9
@@ -16,7 +16,7 @@ The 2026-11-16 v1.2 revision fixes six contradictions found in review (Q2a do-no
 
 ## Status
 
-- Text complete at 19 pages (<= 25-page limit); footer carries page numbers and the TOC matches this PDF.
+- Text complete at 20 pages (<= 25-page limit); footer carries page numbers and the TOC matches this PDF.
 - `analysis/qa_check.py` reports no superseded values; the two 0.850 / 0.465 hits and the 68% hits are intentional Appendix B sensitivity values and Monte-Carlo probabilities.
 - Team number: **19362**.
 

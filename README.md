@@ -2,7 +2,7 @@
 
 本仓库收录 **2026 HiMCM Problem B** 的论文草稿、数据包、审阅意见与复算脚本，供团队多人协作使用。
 
-> **状态：v1.1（18 页）——v1.0 重建 + 评审 P1 增强（逐时气象、蒙特卡罗、成本附加、重叠情景）。** 面积分离、水-能平衡耗水、零设备基准、分级 WBGT proxy、κ 无量纲、按人数计收益均已落地；Summary、Section 1–6、Figures 1–6、AI Use Report、References 齐备。**队号已填（Team 19362）。** 旧版 v0.9 保留作对照。  
+> **状态：v1.1（18 页）——v1.0 重建 + 评审 P1 增强（逐时气象、蒙特卡罗、成本附加、重叠情景）+ 2026-11-16 修订（图 1 重绘、图 3 双面板、Q2b/Q3 补写、验证节、附录 B、正文引用）。** 面积分离、水-能平衡耗水、零设备基准、分级 WBGT proxy、κ 无量纲、按人数计收益均已落地；Summary、Section 1–6、Figures 1–6、AI Use Report、References 齐备。**队号已填（Team 19362）。** 旧版 v0.9 保留作对照。  
 > 审阅发现 5 处会改变结论的问题（Q2b 双机归一化、湿球口径、28°C 阈值、备忘录与 Table 5/6 冲突、68% 交叉点），详见 [`审阅报告_数据与论文一致性.md`](审阅报告_数据与论文一致性.md)。  
 > **P0–P2 产物：** [`docs/model_decisions.md`](docs/model_decisions.md)（D1–D4）、[`docs/tables_v2.md`](docs/tables_v2.md)（锁定数字）、[`docs/data_provenance.md`](docs/data_provenance.md)（来源/假设）、[`docs/sensitivity_report.md`](docs/sensitivity_report.md)（敏感性）、[`paper_v2/Revision_Pack_P0-P2_Bilingual.docx`](paper_v2/Revision_Pack_P0-P2_Bilingual.docx)（中英替换块）。  
 > **整合稿：** [`2026_HiMCM_ProblemB_Full_Paper_v0.9.docx`](2026_HiMCM_ProblemB_Full_Paper_v0.9.docx) / [`.pdf`](2026_HiMCM_ProblemB_Full_Paper_v0.9.pdf)（v1.0，19 页：重建模型 + 新表格 + 新图；v0.9 为旧版，仅作对照）。  
@@ -58,7 +58,7 @@ cd 2026-himcm-problem-b
 | `docs/numbers_v2.csv` | 机器可读的锁定数字 |
 | `docs/p4_qa_report.md` | P4 QA：旧数字残留、表/图编号、页数、TOC、占位页 |
 | `paper_v2/Revision_Pack_P0-P2_Bilingual.docx` | **P1 中英替换块**：4.1–4.4、5.1–5.2、6.1–6.3 + 附录 |
-| `2026_HiMCM_ProblemB_Full_Paper_v1.1.docx` | **v1.1 主稿**（18 页；P0 重建 + P1 增强 + Fig.1 重绘） |
+| `2026_HiMCM_ProblemB_Full_Paper_v1.1.docx` | **v1.1 主稿**（18 页；P0 重建 + P1 增强 + 图重绘 + 验证节 + 附录 B） |
 | `2026_HiMCM_ProblemB_Full_Paper_v1.0.docx` | v1.0（P0 重建，已被 v1.1 取代） |
 | `2026_HiMCM_ProblemB_Full_Paper_v1.0.pdf` | v1.0 PDF |
 | `2026_HiMCM_ProblemB_Full_Paper_v0.9.docx` | 旧版 v0.9（仅作对照，已被 v1.0 取代） |

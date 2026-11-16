@@ -49,4 +49,8 @@ python extras.py               # γ/RH/宽减/2026 情景的附加数字
 - `sensitivity.py` — 单因素敏感性。
 - `build_tables_md.py` — 生成锁定表。
 - `build_revision_pack.py` — 生成中英修订包。
+- `make_fig1.py` — 重绘 Figure 1（系统边界与 Eq.1–6 耦合）。
+- `make_figures.py` — 生成 Figure 2–6。
+- `build_full_paper.py` — 生成论文 DOCX（含目录页码与页脚）。
+- `build_single_file.py` — 生成单档 AllInOne（论文 + 内部清单页）。
 - `extras.py` — γ/RH/宽减/2026 情景。

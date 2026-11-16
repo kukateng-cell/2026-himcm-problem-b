@@ -1,6 +1,6 @@
 # 下一步路线图（ROADMAP）
 
-> **进度（2026-11-15）：v1.0 已按评审 P0 重建完成（19 页）。**
+> **进度（2026-11-16）：v1.1 已定稿 18 页（队号 19362；Figure 1 重绘、Figure 3 双面板、Figure 4 放大图、Q2b/Q3 补写、验证节 5.4、附录 B、[1]–[15] 全部在正文引用）。**
 > 已修复：站台/候车区面积分离（D7）、水-能平衡耗水（D8）、零设备基准与分级安全分（D9）、WBGT proxy 措辞（D10）、κ 无量纲（D11）、N_eff 进入收益项。
 > 产物：`2026_HiMCM_ProblemB_Full_Paper_v1.0.docx/.pdf`、`docs/model_decisions_v2.md`、`docs/tables_v2.md`、`docs/sensitivity_report.md`。
 > 仅剩：封面队号；可选：推广/推 GitHub、LFS。

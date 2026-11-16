@@ -118,47 +118,75 @@ for xi, v, ph in zip(xs - w / 2, one, phi1):
 for xi, v, ph in zip(xs + w / 2, two, phi2):
     ax2.text(xi, v + 0.008, f"E = {v:.4f}\n(φ = {ph:.2f})", ha="center", va="bottom", fontsize=8.2)
 ax2.legend(loc="upper right", fontsize=8.5, frameon=True)
-ax2.set_title("(b) Q2b multi-unit scaling ($A_{zone}$ = 120 m², Phoenix rail)", fontsize=11.5, pad=10)
+ax2.set_title("(b) Q2b multi-unit scaling ($A_{waiting}$ = 120 m², Phoenix rail)", fontsize=11.5, pad=10)
 fig.tight_layout()
 save(fig, "fig2_q2a_q2b.png")
 
 # ---------------------------------------------------------------- fig 3
+def _curves(city, T, rhs):
+    base = copy.deepcopy(R.CITY[city])
+    R.CITY[city]["T"] = float(T)
+    out = {"bus": [], "rail": []}
+    for rh in rhs:
+        R.CITY[city]["RH"] = float(rh)
+        for v in ("bus", "rail"):
+            out[v].append(R.calc(city, v, "MC37V", 1, "pressure")["dT"])
+    R.CITY[city] = base
+    return out
+
+
+def _crossover(city, T, venue):
+    base = copy.deepcopy(R.CITY[city])
+    R.CITY[city]["T"] = float(T)
+
+    def d(rh):
+        R.CITY[city]["RH"] = float(rh)
+        return R.calc(city, venue, "MC37V", 1, "pressure")["dT"]
+
+    fan = R.calc(city, venue, "Fan", 1, "pressure")["dT"]
+    prev = d(10.0) - fan
+    rh = 10.0
+    while rh < 90.0:
+        rh2 = rh + 0.2
+        cur = d(rh2) - fan
+        if prev > 0 and cur <= 0:
+            R.CITY[city] = base
+            return rh + 0.2 * (prev / (prev - cur)), fan
+        prev, rh = cur, rh2
+    R.CITY[city] = base
+    return None, fan
+
+
 rhs = np.arange(10, 91, 2.0)
-dts_bus, dts_rail = [], []
-base_city = copy.deepcopy(R.CITY["PHX"])
-for rh in rhs:
-    R.CITY["PHX"]["T"] = 41.0
-    R.CITY["PHX"]["RH"] = float(rh)
-    dts_bus.append(R.calc("PHX", "bus", "MC37V", 1, "pressure")["dT"])
-    dts_rail.append(R.calc("PHX", "rail", "MC37V", 1, "pressure")["dT"])
-R.CITY["PHX"] = base_city
-fan = R.calc("PHX", "bus", "Fan", 1, "pressure")["dT"]
-
-fig, ax = plt.subplots(figsize=(9.6, 5.6))
-ax.plot(rhs, dts_bus, color=ORANGE, lw=2.4, marker="o", ms=4, label=r"MC37V, bus shelter ($\gamma$ = 0.55)")
-ax.plot(rhs, dts_rail, color=BLUE, lw=2.4, marker="s", ms=4, label=r"MC37V, rail station ($\gamma$ = 0.30)")
-ax.axhline(fan, color=TEAL, lw=2.2, ls="--", label='Drum fan 36" (2.081 °C)')
-ax.axvline(18, color=ORANGE, ls=":", lw=1.6)
-ax.axvline(78, color=TEAL, ls=":", lw=1.6)
-ax.text(19, 4.85, "Phoenix\nRH = 18%", color=ORANGE, fontsize=10, va="top")
-ax.text(76.5, 4.30, "Hong Kong\nRH = 78%", color=TEAL, fontsize=10, va="top", ha="right")
-
-# crossovers from the paper: bus 69.6%, rail 79.7%
-ax.axvline(69.6, color=ORANGE, ls=":", lw=1.4)
-ax.axvline(79.7, color=BLUE, ls=":", lw=1.4)
-ax.text(68.8, 5.95, "bus crossover 69.6%", color=ORANGE, fontsize=9, ha="right")
-ax.text(80.4, 5.55, "rail crossover 79.7%", color=BLUE, fontsize=9, ha="left")
-ax.set_xlim(10, 90)
-ax.set_ylim(0, 6.4)
-ax.set_xlabel("Relative humidity RH (%)")
-ax.set_ylabel(r"Effective apparent cooling $\Delta T_{eff}$ (°C)")
-ax.set_title("RH sensitivity at 41 °C: evaporative cooler vs pure fan", fontsize=12, pad=10)
-ax.legend(loc="lower left", fontsize=9, frameon=True)
+panels = [("PHX", 41.0, 18, "(a) Phoenix design day: 41 °C, 18% RH"),
+          ("HK", 32.5, 78, "(b) Hong Kong design day: 32.5 °C, 78% RH")]
+fig, axes = plt.subplots(1, 2, figsize=(12.8, 5.4), sharey=True)
+for ax, (city, T, rh_mark, title) in zip(axes, panels):
+    cur = _curves(city, T, rhs)
+    c_bus, fan = _crossover(city, T, "bus")
+    c_rail, _ = _crossover(city, T, "rail")
+    ax.plot(rhs, cur["bus"], color=ORANGE, lw=2.3, label=r"MC37V, bus ($\gamma$ = 0.55)")
+    ax.plot(rhs, cur["rail"], color=BLUE, lw=2.3, label=r"MC37V, rail ($\gamma$ = 0.30)")
+    ax.axhline(fan, color=TEAL, lw=2.0, ls="--", label='Drum fan 36" (2.081 °C)')
+    ax.axvline(rh_mark, color="#666666", ls=":", lw=1.3)
+    ax.axvline(c_bus, color=ORANGE, ls=":", lw=1.1)
+    ax.axvline(c_rail, color=BLUE, ls=":", lw=1.1)
+    ax.plot([c_bus, c_rail], [fan, fan], "o", ms=5, color="#222222", zorder=5)
+    ax.text(0.97, 0.97,
+            "design RH %d%%\nbus crossover %.1f%%\nrail crossover %.1f%%" % (rh_mark, c_bus, c_rail),
+            transform=ax.transAxes, ha="right", va="top", fontsize=8.2,
+            bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="#cccccc", lw=0.7))
+    ax.set_xlim(10, 90)
+    ax.set_ylim(0, 7.6)
+    ax.set_xlabel("Relative humidity (%)")
+    ax.set_title(title, fontsize=11, pad=8)
+    ax.legend(loc="lower left", fontsize=8, frameon=True)
+axes[0].set_ylabel(r"Felt cooling $\Delta T_{eff}$ (°C)")
 fig.tight_layout()
 save(fig, "fig3_rh_crossover.png")
 
 # ---------------------------------------------------------------- fig 4
-fig, ax = plt.subplots(figsize=(9.2, 5.8))
+fig, ax = plt.subplots(figsize=(9.6, 6.0))
 seen = {}
 for r in T5:
     key = (r["city"], r["eq"])
@@ -168,11 +196,7 @@ for r in T5:
     seen[key] = dict(city=r["city"], eq=r["eq"], lcc=r["lcc"], ienv=r["I_env"], wbgt=r["wbgt"])
 
 names = {"MC37V": "MC37V", "MC61V": "MC61V", "Porta": "Portacool", "Fan": 'Drum fan 36"'}
-offsets = {("PHX", "MC37V"): (8, 0.015), ("HK", "MC37V"): (8, -0.045),
-           ("PHX", "MC61V"): (8, 0.012), ("HK", "MC61V"): (-95, -0.055),
-           ("PHX", "Porta"): (8, 0.010), ("HK", "Porta"): (-78, -0.060),
-           ("PHX", "Fan"): (-72, -0.062), ("HK", "Fan"): (8, 0.020)}
-offsets = {"MC37V": (8, 0.012), "MC61V": (8, 0.012), "Porta": (8, -0.035), "Fan": (8, 0.048)}
+offsets = {"MC37V": (8, 0.012), "MC61V": (8, 0.012), "Porta": (8, -0.035), "Fan": (10, 0.058)}
 for (city, eq), d in seen.items():
     ok = d["wbgt"] <= 30.0
     color = GREEN if ok else ORANGE
@@ -184,9 +208,27 @@ for (city, eq), d in seen.items():
                     xytext=(d["lcc"] + dx, d["ienv"] + dy), fontsize=8.0, color="#333333")
 ax.set_xlabel(r"Annualised life-cycle cost $LCC_{annual}$ (USD/yr)")
 ax.set_ylabel(r"Water–carbon externality $I_{env}$")
-ax.set_title(r"$LCC$ vs $I_{env}$ trade-off (colour: WBGT at the 30 °C reference)", fontsize=12, pad=10)
+ax.set_title(r"$LCC$ vs $I_{env}$ (shape = city, fill = WBGT at the 30 °C reference)",
+             fontsize=11.5, pad=10)
 ax.set_xlim(100, 400)
 ax.set_ylim(0.1, 1.02)
+
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+axins = inset_axes(ax, width="34%", height="30%", loc="upper left", borderpad=1.4)
+for (city, eq), d in seen.items():
+    if eq != "Fan":
+        continue
+    axins.scatter(d["lcc"], d["ienv"], s=80, color=GREEN if d["wbgt"] <= 30 else ORANGE,
+                  marker="o" if city == "PHX" else "^", edgecolor="#222222", lw=0.8)
+    axins.annotate("Phoenix" if city == "PHX" else "Hong Kong",
+                   (d["lcc"], d["ienv"]), xytext=(6, 5 if city == "PHX" else -12),
+                   textcoords="offset points", fontsize=7.5, color="#333333")
+axins.set_xlim(124, 140)
+axins.set_ylim(0.168, 0.222)
+axins.tick_params(labelsize=6)
+axins.set_title("two fan points", fontsize=7)
+ax.add_patch(Rectangle((124, 0.168), 16, 0.054, fill=False, ec="#999999", lw=0.8, zorder=5))
+
 from matplotlib.lines import Line2D
 handles = [Line2D([], [], marker="o", ls="", color="#555555", label="Phoenix"),
            Line2D([], [], marker="^", ls="", color="#555555", label="Hong Kong"),
@@ -208,7 +250,7 @@ R.VENUE["bus"] = base_venue
 ax1.plot(gammas, etas, color=BLUE, lw=2.4)
 ax1.axvline(0.30, color=TEAL, ls="--", lw=1.6)
 ax1.axvline(0.55, color=ORANGE, ls="--", lw=1.6)
-ax1.text(0.305, min(etas) + 6, "rail $\\gamma$ = 0.30", color=TEAL, fontsize=9, rotation=90, va="bottom")
+ax1.text(0.305, min(etas) + 6, "rail $\\gamma$ = 0.30", color=BLUE, fontsize=9, rotation=90, va="bottom")
 ax1.text(0.555, min(etas) + 6, "bus $\\gamma$ = 0.55", color=ORANGE, fontsize=9, rotation=90, va="bottom")
 ax1.set_xlabel(r"Lateral escape rate $\gamma$")
 ax1.set_ylabel(r"Cooling efficiency $\eta$ (persons·°C/kW)")
@@ -236,7 +278,7 @@ for i, p in enumerate(profiles):
         ax2.text(j, i, f"{score:.2f}\n{display[eq]}", ha="center", va="center", color="white" if eq != "Fan" else "#3a2a10", fontsize=8.6, fontweight="bold")
 ax2.set_title("Winner matrix: best unit and its score per COO profile", fontsize=11, pad=10)
 from matplotlib.patches import Patch
-ax2.legend(handles=[Patch(facecolor=colors[k], label=display[k]) for k in ["MC37V", "MC61V", "Porta", "Fan"]],
+ax2.legend(handles=[Patch(facecolor=colors[k], label=display[k]) for k in ["MC37V", "MC61V", "Fan"]],
            loc="upper center", bbox_to_anchor=(0.5, -0.14), ncol=4, fontsize=8, frameon=False)
 fig.tight_layout()
 save(fig, "fig5_gamma_heatmap.png")
@@ -249,7 +291,7 @@ hk_bus_fan = next(r for r in T5 if r["city"] == "HK" and r["venue"] == "bus" and
 fig, ax = plt.subplots(figsize=(12.4, 5.0))
 ax.axis("off")
 ax.set_xlim(0, 10)
-ax.set_ylim(-0.05, 4.0)
+ax.set_ylim(-0.38, 4.0)
 ax.set_title("Shade first, then windbreak, then match the machine to the climate", fontsize=13, pad=14)
 
 def panel(x0, color, title, subtitle, lines):
@@ -278,7 +320,9 @@ panel(5.05, TEAL, "Hong Kong — humid-hot (32.5 °C, 78% RH)", "Recommended: 1�
        (f"+{ratio:.0f}%", f"more cooling than the evaporative option ({hk_bus_37['dT']:.2f} °C)"),
        ("0 L", f"water, versus {water_hk:.0f} L/kWh for evaporative cooling"),
        (f"${hk_bus_fan['lcc']:.0f} /yr", "annualised life-cycle cost")])
-ax.text(5.0, 0.02, "Model values at the 30 °C reference; full-coverage and partial-coverage cases differ (see Table 4b).",
-        ha="center", va="bottom", fontsize=7.6, style="italic", color="#555555")
+ax.text(5.0, -0.06, "Platforms: Phoenix 1× MC61V (full coverage); Hong Kong 1× MC37V (partial coverage, φ = 0.69).",
+        ha="center", va="bottom", fontsize=7.8, color="#333333")
+ax.text(5.0, -0.26, "Model values at the 30 °C reference; full-coverage and partial-coverage cases differ (see Table 4b).",
+        ha="center", va="bottom", fontsize=7.2, style="italic", color="#555555")
 save(fig, "fig6_infographic.png")
 print("done")

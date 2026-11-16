@@ -108,7 +108,7 @@ def main():
 
     # ground line and coverage label (label now below the line, no collision)
     ax.plot([6, 44], [8.6, 8.6], color=INK, lw=2.2, zorder=5)
-    text(ax, 24, 6.3, r"Coverage $A_{cov}$   ($\varphi = A_{cov}/A_{zone}$)", 9)
+    text(ax, 24, 6.3, r"Coverage $A_{cov}$   ($\varphi = \min(1,\, n A_{cov}/A_{waiting})$)", 8.6)
 
     # side note
     ax.add_patch(FancyBboxPatch((12.5, 1.8), 23, 2.6,
@@ -151,8 +151,8 @@ def main():
     text(ax, 86.75, 24.4, r"externality $I_{env}$", 8.6)
 
     # coupling arrows
-    arrow(ax, (78.0, 40.6), (69.5, 30.2), BLUE, lw=1.5, ls=(0, (4, 3)), rad=0.12)
-    arrow(ax, (88.6, 40.6), (87.4, 32.4), ORANGE, lw=1.6, rad=-0.25)
+    arrow(ax, (78.0, 40.6), (66.0, 30.2), BLUE, lw=1.5, ls=(0, (4, 3)), rad=0.12)
+    arrow(ax, (86.2, 40.6), (71.4, 30.2), ORANGE, lw=1.6, rad=-0.18)
     arrow(ax, (79.4, 26.6), (74.2, 26.6), INK, lw=1.5)
 
     # bottom summary strip

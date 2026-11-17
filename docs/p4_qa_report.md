@@ -93,7 +93,7 @@ python analysis/qa_check.py                  # 本 QA 的自动扫描
 **日期：** 2026-11-15  **稿：** `2026_HiMCM_ProblemB_Full_Paper_v1.0.docx/.pdf`（19 页）
 
 - **面积分离（D7）**：Table 2C 同时给 A_platform（425 / 128 m²）与 A_waiting（120 / 128 m²）；φ 的分母是候车区，一台 MC61V 的“全覆盖”只针对 120 m² 候车区。
-- **水-能平衡（D8）**：V_w 由 Eq. 8 推导；Phoenix 约 25/43/19 L/h，HK 约 6.6/11.3/5.1 L/h；LCC 水费与 W_eq 随之变化。
+- **水-能平衡（D8）**：V_w 由 Eq. 7 推导；Phoenix 约 25/43/19 L/h，HK 约 6.9/11.7/5.3 L/h；LCC 水费与 W_eq 随之变化。
 - **零设备基准（D9）**：加入 do-nothing 候选，E = 0.2224（Phoenix）/ 0.0925（HK），低于各自最优设备；分级安全分（26–32 °C）与按人数收益消除了“不装更好”的悖论。
 - **WBGT proxy（D10）**：全文改称近似 WBGT/proxy，删除“达标/合规”；28 °C 作为压力测试。
 - **κ 无量纲（D11）**：κ = 45 标为动量放大系数；v_eff 单位修正。

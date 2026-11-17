@@ -5,8 +5,9 @@
 ## 快速运行
 
 ```bash
-python recompute.py                 # 默认：压力修正湿球、30°C、Set B、n=1
-python recompute.py --threshold 28  # 28°C 敏感性
+python recompute.py                 # 默认：压力修正湿球、33°C、Set B、n=1
+python recompute.py --threshold 30  # 30°C 脆弱人群 screen（26–32°C）
+python recompute.py --threshold 28  # 28°C 更严 stress（24–30°C）
 python recompute.py --wetbulb stull # 旧口径（Stull 海平面）
 python recompute.py --norm A        # Table 3 的 Set A
 python recompute.py --csv docs      # 写出 docs/numbers_v2.csv
@@ -34,7 +35,7 @@ python extras.py               # γ/RH/宽减/2026 情景的附加数字
 
 - **D1**：Set A（Q2a，Table 3）与 Set B（Q2b–Q4，Table 4–6）分开；E 只在同一集合内可比。
 - **D2**：默认压力修正湿球（Phoenix 950 hPa、HK 1000 hPa）；`--wetbulb stull` 复现旧口径。
-- **D3**：默认 30°C；`--threshold 28` 为未适应人群敏感性。
+- **D3**：默认 33°C（ISO 7243 115 W）；`--threshold 30` 是脆弱人群 screen（26–32°C），`--threshold 28` 是更严 stress（24–30°C）。Table 6b 的 28°C 仍是 exposure check（多少人 ≤28°C），与评分曲线分开使用。
 - **D4**：1 台/2 台同尺度；2 台不再自动更优。
 
 ## 已知差异（与旧稿）

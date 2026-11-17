@@ -11,12 +11,12 @@ from docx.oxml import OxmlElement
 import recompute as R
 
 R.MODE = "pressure"
-R.THRESH = 30.0
+R.THRESH = 33.0
 
-T3, G3 = R.table3_rows("pressure", 30.0)
-T4, G4 = R.table4_rows("pressure", 30.0)
-T5, G5 = R.table5_rows("pressure", 30.0, "B")
-T6_30 = R.table6(T5, G5, 30.0)
+T3, G3 = R.table3_rows("pressure", 33.0)
+T4, G4 = R.table4_rows("pressure", 33.0)
+T5, G5 = R.table5_rows("pressure", 33.0, "B")
+T6_30 = R.table6(T5, G5, 33.0)
 T5_28, G28 = R.table5_rows("pressure", 28.0, "B")
 T6_28 = R.table6(T5_28, G28, 28.0)
 
@@ -26,7 +26,7 @@ def find(tbl, city, eq, n=1):
 
 
 def e(city, eq, n=1):
-    return R.score(find(T4, city, eq, n), G4, threshold=30.0)[0]
+    return R.score(find(T4, city, eq, n), G4, threshold=33.0)[0]
 
 
 OUT = "paper_v2/Revision_Pack_P0-P2_Bilingual.docx"

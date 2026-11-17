@@ -1,8 +1,9 @@
 """Hourly ERA5 scenarios for the v1.0 model.
 
 Reads the workbook weather sheets (HK and Phoenix, 0.25 deg grid, hourly,
-Jun-Aug 2026), averages the grid to a city series, restricts to the 11:00-19:00
-peak window, and re-scores the four units at both venues for every hour.
+Jun-Aug 2026), averages the grid to a city series, converts the ERA5 UTC
+valid_time to local time, restricts to the local 11:00-19:00 peak window, and
+re-scores the four units at both venues for every hour.
 
 Outputs:
   docs/hourly_scenarios.csv
@@ -15,7 +16,7 @@ import os
 import sys
 
 import openpyxl
-from datetime import datetime
+from datetime import date, datetime, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import recompute as R
@@ -25,6 +26,9 @@ WB = os.path.join(ROOT, "蒸发冷却研究资料统整_全部保留并新增凤
 
 SHEETS = {"HK": "气象瞬时_数据明细", "PHX": "凤凰城气象数据"}
 UNITS = ["MC37V", "MC61V", "Porta", "Fan"]
+# ERA5 valid_time is UTC.  Hong Kong is UTC+8; Phoenix (MST, no DST) is UTC-7.
+# The paper's peak window is local 11:00-19:00 inclusive, so convert before filtering.
+TZ_OFFSET = {"HK": 8, "PHX": -7}
 
 
 def es(T):
@@ -64,7 +68,7 @@ def load_city(wb, sheet):
 
 
 def score_row(r, g):
-    E, I, B, S = R.score(r, g, threshold=30.0)
+    E, I, B, S = R.score(r, g, threshold=33.0)
     return E, I, B, S
 
 
@@ -74,18 +78,22 @@ def main():
     base = {c: dict(R.CITY[c]) for c in R.CITY}
     recs = []
     for city, sheet in SHEETS.items():
-        series = load_city(wb, sheet)
-        peak = [x for x in series if 11 <= x[0].hour <= 19]
-        print(city, "hours total", len(series), "peak", len(peak))
+        utc_series = load_city(wb, sheet)
+        offset = timedelta(hours=TZ_OFFSET[city])
+        series = [(t + offset, T, RH, v, ps) for (t, T, RH, v, ps) in utc_series]
+        peak = [x for x in series
+                if 11 <= x[0].hour <= 19
+                and date(2026, 6, 1) <= x[0].date() <= date(2026, 8, 31)]
+        print(city, "hours total", len(series), "peak (local 11-19)", len(peak))
         for t, T, RH, v, ps in peak:
             R.CITY[city].update(T=T, RH=RH, v=v, psurf=ps)
             for venue in R.VENUE:
                 nd = R.no_device(city, venue)
-                ndE = R.score(nd, g, threshold=30.0)[0]
+                ndE = R.score(nd, g, threshold=33.0)[0]
                 es_ = {}
                 for eq in UNITS:
                     row = R.calc(city, venue, eq, 1)
-                    E, I, B, S = R.score(row, g, threshold=30.0)
+                    E, I, B, S = R.score(row, g, threshold=33.0)
                     es_[eq] = (E, row)
                 best_u = max(es_, key=lambda k: es_[k][0])
                 best_all = "none" if ndE > es_[best_u][0] else best_u
@@ -104,8 +112,8 @@ def main():
         for r in recs:
             w.writerow({k: r[k] for k in fields})
 
-    lines = ["# 逐时气象情景（2026-06-01 至 08-31，11:00–19:00）\n",
-             "数据：工作簿 ERA5 0.25° 格点，按城市取格点平均；风为 10 m 风速 × 0.75 折算到 2 m。",
+    lines = ["# 逐时气象情景（2026-06-01 至 08-31，当地 11:00–19:00）\n",
+             "数据：工作簿 ERA5 0.25° 格点，按城市取格点平均；已把 UTC valid_time 转为当地时间（HK UTC+8，PHX UTC-7）；风为 10 m 风速 × 0.75 折算到 2 m。",
              "模型：v1.0（`analysis/recompute.py`），归一化固定为基线；每小时对 4 单位 × 2 场地评分，并与零设备比较。\n"]
     for city in ("PHX", "HK"):
         lines.append("## %s\n" % city)

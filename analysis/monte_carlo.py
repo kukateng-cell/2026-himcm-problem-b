@@ -34,14 +34,14 @@ def restore():
     R.EQUIPMENT = copy.deepcopy(BASE_EQ)
     R.CITY = copy.deepcopy(BASE_CITY)
     R.VENUE = copy.deepcopy(BASE_VENUE)
-    R.KAPPA = 45.0
+    R.KAPPA_V = {"bus": 84.0, "rail": 45.0}
     R.WATER_MULT = 1.0
     R.WATER_MODE = "balance"
 
 
 def draw(rng):
     restore()
-    R.KAPPA = rng.uniform(30, 60)
+    R.KAPPA_V = {"bus": rng.uniform(60, 105), "rail": rng.uniform(35, 55)}
     R.VENUE["bus"]["g"] = rng.uniform(0.45, 0.65)
     R.VENUE["rail"]["g"] = rng.uniform(0.25, 0.35)
     for k, e in R.EQUIPMENT.items():
@@ -72,11 +72,11 @@ def main():
         rows = {(c, v, e): R.calc(c, v, e, 1) for c, v, e in itertools.product(CITIES, VENUES, UNITS)}
         E = {}
         for key, r in rows.items():
-            E[key] = R.score(r, g, threshold=30.0)[0]
+            E[key] = R.score(r, g, threshold=33.0)[0]
         for c in CITIES:
             for v in VENUES:
                 nd = R.no_device(c, v)
-                ndE = R.score(nd, g, threshold=30.0)[0]
+                ndE = R.score(nd, g, threshold=33.0)[0]
                 best_unit = max(UNITS, key=lambda u: E[(c, v, u)])
                 if ndE > E[(c, v, best_unit)]:
                     none_best[(c, v)] += 1
@@ -102,7 +102,7 @@ def main():
 
     lines = ["# 蒙特卡罗 / 联合不确定性（v1.0）\n",
              "**样本：** %d 次联合抽样，seed = %d。" % (N, SEED),
-             "**抽样：** κ~U(30,60)、γ~U(0.45,0.65)/U(0.25,0.35)、ε~U(0.70,0.90)、ΔT_nom~U(8.8,13.2)、"
+             "**抽样：** κ_bus~U(60,105)、κ_rail~U(35,55)、γ~U(0.45,0.65)/U(0.25,0.35)、ε~U(0.70,0.90)、ΔT_nom~U(8.8,13.2)、"
              "L×U(0.7,1.3)、r~U(0.5,1.5)、A_cov×U(0.8,1.2)、N_eff×U(0.8,1.2)、水耗×U(0.7,1.3)、电价/水价×U(0.8,1.2)。",
              "**模型：** `analysis/recompute.py`，每次抽样重算归一化；E 只用于同场地比较。\n",
              "## 设备胜出概率（含零设备）\n",

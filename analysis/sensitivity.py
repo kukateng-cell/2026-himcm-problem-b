@@ -21,7 +21,7 @@ import sys
 import recompute as R
 
 R.MODE = "pressure"
-R.THRESH = 30.0
+R.THRESH = 33.0
 
 OPTIONS = [
     ("PHX", "MC37V", 1), ("PHX", "MC61V", 1), ("PHX", "MC37V", 2),
@@ -43,12 +43,14 @@ def metrics(g=None):
 
 def apply(fn, g=None):
     eq0, city0, venue0 = copy.deepcopy(R.EQUIPMENT), copy.deepcopy(R.CITY), copy.deepcopy(R.VENUE)
-    k0, t0 = R.KAPPA, R.THRESH
+    k0, t0, w0 = R.KAPPA, R.THRESH, R.WATER_MULT
+    kv0 = dict(R.KAPPA_V)
     try:
         fn()
         return metrics(g)
     finally:
-        R.EQUIPMENT, R.CITY, R.VENUE, R.KAPPA, R.THRESH = eq0, city0, venue0, k0, t0
+        R.EQUIPMENT, R.CITY, R.VENUE, R.KAPPA, R.THRESH, R.WATER_MULT = eq0, city0, venue0, k0, t0, w0
+        R.KAPPA_V = kv0
 
 
 def variations():
@@ -77,16 +79,16 @@ def variations():
         ("L_life +30%", lambda: scale("L", 1.3)),
         ("r_om -50%", lambda: scale("r", 0.5)),
         ("r_om +50%", lambda: scale("r", 1.5)),
-        ("V_w -30%", lambda: scale("V", 0.7)),
-        ("V_w +30%", lambda: scale("V", 1.3)),
+        ("V_w -30%", lambda: setattr(R, "WATER_MULT", 0.7)),
+        ("V_w +30%", lambda: setattr(R, "WATER_MULT", 1.3)),
         ("p_elec -20%", lambda: [R.CITY[c].__setitem__("pe", R.CITY[c]["pe"] * 0.8) for c in R.CITY]),
         ("p_elec +20%", lambda: [R.CITY[c].__setitem__("pe", R.CITY[c]["pe"] * 1.2) for c in R.CITY]),
         ("p_water -50%", lambda: [R.CITY[c].__setitem__("pw", R.CITY[c]["pw"] * 0.5) for c in R.CITY]),
         ("p_water +50%", lambda: [R.CITY[c].__setitem__("pw", R.CITY[c]["pw"] * 1.5) for c in R.CITY]),
         ("H_yr -20%", lambda: [R.CITY[c].__setitem__("H", R.CITY[c]["H"] * 0.8) for c in R.CITY]),
         ("H_yr +20%", lambda: [R.CITY[c].__setitem__("H", R.CITY[c]["H"] * 1.2) for c in R.CITY]),
-        ("kappa=30", lambda: setattr(R, "KAPPA", 30.0)),
-        ("kappa=60", lambda: setattr(R, "KAPPA", 60.0)),
+        ("kappa=30", lambda: setattr(R, "KAPPA_V", {"bus": 30.0, "rail": 30.0})),
+        ("kappa=105", lambda: setattr(R, "KAPPA_V", {"bus": 105.0, "rail": 105.0})),
         ("gamma -0.10", lambda: set_gamma(-0.10)),
         ("gamma +0.10", lambda: set_gamma(+0.10)),
         ("A_cov -20%", lambda: scale("A", 0.8)),

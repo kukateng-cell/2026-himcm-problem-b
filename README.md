@@ -2,7 +2,14 @@
 
 本仓库收录 **2026 HiMCM Problem B** 的论文草稿、数据包、审阅意见与复算脚本，供团队多人协作使用。
 
-> **状态：v1.3（20 页，含 5.6 横风/联合工况节与 16–19 号新引用）——v1.0 重建 + P1 增强 + 2026-11-16 两轮修订（图重绘、Q2b/Q3 补写、计算核查节、附录 B、正文引用；并修正正文/表格矛盾、加入安全筛选与全成本反转、列出结构性限制）。** 面积分离、水-能平衡耗水、零设备基准、分级 WBGT proxy、κ 无量纲、按人数计收益均已落地；Summary、Section 1–6、Figures 1–6、AI Use Report、References 齐备。**队号已填（Team 19362）。** 旧版 v0.9 保留作对照。  
+> **状态：v1.5 + 评审修订（22 页，含 5.6 横风/联合工况节与 16–19 号新引用）——v1.0 重建 + P1 增强 + 2026-11-16 四轮修订（图重绘、Q2b/Q3 补写、计算核查节、附录 B、正文引用；Table 7 改按当地时间重算 828 HK / 825 PHX；memo 聚焦 Phoenix rail；28 °C 成为真实更严曲线；新增 5.7 定义敏感性；base 提升为 ISO 33 °C + HK 31.7/77，Table 3–6 与 Figures 2–6 全部重算；修正正文/表格矛盾、加入安全筛选与全成本反转、列出结构性限制）。** 面积分离、水-能平衡耗水、零设备基准、分级 WBGT proxy、κ 无量纲、按人数计收益均已落地；Summary、Section 1–6、Figures 1–6、AI Use Report、References 齐备。**队号已填（Team 19362）。** 旧版 v0.9 保留作对照。  
+> **第二轮评审修订（22 页）：** 按 B 题提交清单逐条核对（7/7 齐备、5/5 覆盖）；新增 §6.3 Deployment Guidelines，参考文献顺延为 §6.4；纠正 115 W 安全分类、拆分 Q2a 风扇效率与 41 °C 部署、说明人数在 E 中抵消、NASA 横风降为情景、κ 扩至 105、耗水口径统一为 0.2845、补齐全成本网络预算 $24,222/年、解释 825 时刻缺口、补设计小时与几何说明。
+> **第三轮评审修订（2026-11-16 深夜）：** 修正 §4.1 的 1.2 kW / 0.25 kW 机组错误；§6.3 “no saving” 改为“不优于不制冷”；摘要/指南/博客的“双机切换”改为“重新评估”；加入 κ≈92 明示；κ=45 投掷距离改为 7.0 m，覆盖翻转阈值改为 +0.6%（88.5 m²）；新增 Table 10b 联合工况；Table 6c 增加完整成本列；6 人改为尖峰估计；安全阈值改为建模参考。
+> **第四轮补充（23 页）：** 以短段处理剩余非致命缺口——分区平均 κ（公交亭≈84、站台≈30；κ=30 时站台已由 MC37V 领先，与 Table 10b 同向）、三方案年度预算（风扇 $132、冷机 $177、双机 $243–309，双机额外 $66–177/年无法由 E 证明）、设计日与额定水耗口径披露（序列最大 WBGT 35.6/60.2 比测试的 33.5/62 更热更干，主表按额定水耗、Table 10b 为并列联合工况，非静默重算）。
+> **排版修订：** Eq.1–7 改为专业排版（变量斜体、真下标/上标、分式写法），正文与表格里的 T_db、A_cov、N_eff 等全部转为真下标，^ 幂次转为上标；全文由 23 页变为 **22 页**，目录已同步（3.4→8、附录 A→21、附录 B→22）。  
+> **合并对方修订：** 摘要末段改为 “Data boundaries”（两站台代表性几何、κ 无标定、WBGT 代理、31.7/77 为选定设计小时而非序列最大）；§5.5 改为“两种几何都是代表性测量 + 推荐是条件情景结果”；备忘录加入 representative platform geometry / uncalibrated κ；附录 A 五行数据登记加强（κ 无现场标定、几何非实测、湿球为心理测量估计、设计小时说明）。  
+> **v1.2 格式版：** 按用户提供的 `2026_HiMCM_ProblemB_new(1).docx` 版式重排——正文 Times New Roman 10 pt、两端对齐、1.15 行距，标题黑色 14/12/11 pt，页脚 PAGE/NUMPAGES 字段，目录改为点线引导（非表格）；公式保持专业排版（变量斜体、真下标/上标）；表格压回 8 pt 控制页数，全文 **23 页**（≤25）。文件：`2026_HiMCM_ProblemB_Full_Paper_v1.2.docx/.pdf`。  
+> **v1.2 定稿（模板原生格式）：** 直接基于用户手动排版稿重建：公式保持原生纯文本（不改为文本框/下标），目录保持 Word TOC 域（含 5.x 子条目），表头底纹 D9D9D9 保留；仅把表格字号压到 8 pt 以满足 25 页上限（原生 10 pt 为 27 页）。TOC 缓存页码已按实际 23 页刷新。  
 > 审阅发现 5 处会改变结论的问题（Q2b 双机归一化、湿球口径、28°C 阈值、备忘录与 Table 5/6 冲突、68% 交叉点），详见 [`审阅报告_数据与论文一致性.md`](审阅报告_数据与论文一致性.md)。  
 > **P0–P2 产物：** [`docs/model_decisions.md`](docs/model_decisions.md)（D1–D4）、[`docs/tables_v2.md`](docs/tables_v2.md)（锁定数字）、[`docs/data_provenance.md`](docs/data_provenance.md)（来源/假设）、[`docs/sensitivity_report.md`](docs/sensitivity_report.md)（敏感性）、[`paper_v2/Revision_Pack_P0-P2_Bilingual.docx`](paper_v2/Revision_Pack_P0-P2_Bilingual.docx)（中英替换块）。  
 > **整合稿：** [`2026_HiMCM_ProblemB_Full_Paper_v0.9.docx`](2026_HiMCM_ProblemB_Full_Paper_v0.9.docx) / [`.pdf`](2026_HiMCM_ProblemB_Full_Paper_v0.9.pdf)（v1.0，19 页：重建模型 + 新表格 + 新图；v0.9 为旧版，仅作对照）。  
@@ -52,13 +59,13 @@ cd 2026-himcm-problem-b
 | `docs/model_decisions_v2.md` | **v1.0 模型口径 D7–D11**（面积分离、水-能平衡、零设备基准、WBGT proxy、κ 无量纲） |
 | `ROADMAP.md` | 下一步路线图：P0 锁数字 → P1 改结论 → P2 补来源 → P3 补完整性 → P4 QA |
 | `docs/model_decisions.md` | P0 的 D1–D4 决定、归一化集合、旧→新对照 |
-| `docs/tables_v2.md` | 锁定数字：Table 3/4/5/6（30°C 与 28°C） |
+| `docs/tables_v2.md` | 锁定数字：Table 3/4/5/6（33°C 与 28°C） |
 | `docs/data_provenance.md` | P2 数据来源/假设登记表（含敏感性） |
 | `docs/sensitivity_report.md` | P2 单因素敏感性、稳健结论、翻盘条件 |
 | `docs/numbers_v2.csv` | 机器可读的锁定数字 |
 | `docs/p4_qa_report.md` | P4 QA：旧数字残留、表/图编号、页数、TOC、占位页 |
 | `paper_v2/Revision_Pack_P0-P2_Bilingual.docx` | **P1 中英替换块**：4.1–4.4、5.1–5.2、6.1–6.3 + 附录 |
-| `2026_HiMCM_ProblemB_Full_Paper_v1.1.docx` | **v1.3 主稿**（20 页；P0 重建 + P1 增强 + 图重绘 + 计算核查 + 附录 B + 矛盾修正/安全筛选/成本反转） |
+| `2026_HiMCM_ProblemB_Full_Paper_v1.1.docx` | **v1.5 主稿**（21 页；P0 重建 + P1 增强 + 图重绘 + 计算核查 + 附录 B + 矛盾修正/安全筛选/成本反转 + Table 7 本地时区 + memo 单一场地 + ISO 33/HK 31.7 base） |
 | `2026_HiMCM_ProblemB_Full_Paper_v1.0.docx` | v1.0（P0 重建，已被 v1.1 取代） |
 | `2026_HiMCM_ProblemB_Full_Paper_v1.0.pdf` | v1.0 PDF |
 | `2026_HiMCM_ProblemB_Full_Paper_v0.9.docx` | 旧版 v0.9（仅作对照，已被 v1.0 取代） |
@@ -95,6 +102,8 @@ cd 2026-himcm-problem-b
 ---
 
 ## 4. 审阅结论摘要（5 处会改变结论）
+
+> 以下为 **2026-11-15** 审阅记录；v1.5 已把 base 提升为 **ISO 33 °C + HK 31.7/77**，最新数字见论文 Table 3–11 与 5.7。
 
 1. **Q2b 双机结论是两套归一化混用**：Table 4 的 1 台行用 16 情景基准，2 台行用“本表两台子集”基准；统一尺度后 2 台反而更低（如 0.1616 vs 0.3005），且 2 台的 I_env = 1.037 > 1。备忘录 Phoenix 2× 建议证据不成立。
 2. **湿球口径矛盾**：Table 2 写 21.8（950 hPa 精确值），模型用 Stull 22.63；用 21.8 风扇 WBGT = 27.56（<28），只有 22.63 才是 28.14。“风扇超标”落在公式误差内。

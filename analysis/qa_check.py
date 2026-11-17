@@ -23,12 +23,13 @@ checks = [
     ("0.3410", "old Table 4 2-unit E"),
     ("28.14", "old Phoenix fan WBGT"),
     ("0.1247", "old Phoenix electricity price"),
-    ("0.850", "old HK BWS"),
-    ("0.465", "old HK EF"),
-    ("68%", "old universal RH crossover"),
+    ("828 = 92 days", "old UTC-window count"),
+    ("98% of device-hours", "old UTC-window HK fan share"),
+    ("93%", "old UTC-window HK do-nothing share"),
+    ("Fan 84%", "old UTC-window hottest winner"),
+    ("For the Hong Kong platform, shade", "old multi-venue memo recommendation"),
     ("do not deploy evaporative cooling at all", "old blanket HK claim"),
     ("2× MC37V (recommended)", "old 2-unit recommendation"),
-    ("Table 7", "non-existent table number"),
     ("Figure 7", "non-existent figure number"),
 ]
 print("=== forbidden/stale string scan ===")

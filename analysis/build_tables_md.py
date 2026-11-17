@@ -4,7 +4,7 @@ import os
 import recompute as R
 
 R.MODE = "pressure"
-R.THRESH = 30.0
+R.THRESH = 33.0
 
 
 def md_table(headers, rows, fmt=None):
@@ -23,16 +23,16 @@ def md_table(headers, rows, fmt=None):
 
 def main():
     os.makedirs("docs", exist_ok=True)
-    t3, g3 = R.table3_rows("pressure", 30.0)
-    t4, g4 = R.table4_rows("pressure", 30.0)
-    t5, g5 = R.table5_rows("pressure", 30.0, "B")
-    t6_30 = R.table6(t5, g5, 30.0)
+    t3, g3 = R.table3_rows("pressure", 33.0)
+    t4, g4 = R.table4_rows("pressure", 33.0)
+    t5, g5 = R.table5_rows("pressure", 33.0, "B")
+    t6_30 = R.table6(t5, g5, 33.0)
     t5_28, g28 = R.table5_rows("pressure", 28.0, "B")
     t6_28 = R.table6(t5_28, g28, 28.0)
 
     parts = []
     parts.append("# 锁定数字表 v1.0（重建版）\n")
-    parts.append("口径：压力修正湿球（Phoenix 950 hPa / HK 1000 hPa）、30 °C 参考、"
+    parts.append("口径：压力修正湿球（Phoenix 950 hPa / HK 1000 hPa）、33 °C 参考、"
                  "近似 WBGT proxy、按场地（bus / rail）分别归一化、耗水由水-能平衡推导。\n")
     parts.append("生成脚本：`analysis/build_tables_md.py`（依赖 `analysis/recompute.py`）。\n")
     parts.append("E 只用于同场地内比较（bus 与 bus、rail 与 rail），不跨场地比较。\n")
@@ -45,19 +45,19 @@ def main():
         parts.append("| %s | %d | %.2f | %.2f | %.1f | %.1f |" %
                      (label, R.VENUE[venue]["N"], g["B"], g["L"], g["E"], g["W"]))
 
-    parts.append("\n## Table 3（Q2a，Phoenix 公交亭，30 °C）\n")
+    parts.append("\n## Table 3（Q2a，Phoenix 公交亭，33 °C）\n")
     parts.append(md_table(
         ["System", "P (kW)", "ΔT_eff (°C)", "φ", "η (pers·°C/kW)", "LCC (USD/yr)", "WBGT proxy", "E"],
         [[r["eq"], r["P"], r["dT"], r["phi"], r["eta"], r["lcc"], r["wbgt"], r["E"]] for r in t3],
         [None, "%.3f", "%.3f", "%.3f", "%.2f", "%.2f", "%.2f", "%.4f"]))
 
-    parts.append("\n## Table 4（Q2b，rail，1 vs 2 台，30 °C）\n")
+    parts.append("\n## Table 4（Q2b，rail，1 vs 2 台，33 °C）\n")
     parts.append(md_table(
         ["City", "Equipment", "n", "φ", "ΔT_eff (°C)", "LCC (USD/yr)", "WBGT proxy", "S_safe", "E"],
         [[r["city"], r["eq"], r["n"], r["phi"], r["dT"], r["lcc"], r["wbgt"], r["S_safe"], r["E"]] for r in t4],
         [None, None, "%d", "%.3f", "%.3f", "%.2f", "%.2f", "%.3f", "%.4f"]))
 
-    parts.append("\n## Table 5（Q3，16 情景，30 °C）\n")
+    parts.append("\n## Table 5（Q3，16 情景，33 °C）\n")
     parts.append(md_table(
         ["ID", "City", "Venue", "Equipment", "ΔT_eff", "φ", "η", "LCC", "I_env", "WBGT proxy", "E"],
         [["SC-%02d" % (i + 1), r["city"], r["venue"], r["eq"], r["dT"], r["phi"], r["eta"],
@@ -70,10 +70,10 @@ def main():
     for city in R.CITY:
         for venue in R.VENUE:
             nd = R.no_device(city, venue)
-            E, _, _, s = R.score(nd, g5, threshold=30.0)
+            E, _, _, s = R.score(nd, g5, threshold=33.0)
             parts.append("| %s %s | %.2f | %.3f | %.4f |" % (city, venue, nd["wbgt_amb"], s, E))
 
-    parts.append("\n## Table 6（COO 权重，30 °C）\n")
+    parts.append("\n## Table 6（COO 权重，33 °C）\n")
     parts.append("| Profile | Phoenix Bus | Phoenix Rail | HK Bus | HK Rail |")
     parts.append("|---|---|---|---|---|")
     for name in ["Balanced", "Safety", "Cost", "Eco"]:
@@ -86,7 +86,7 @@ def main():
 
     parts.append("\n## Table 6b（28 °C 非适应人群暴露检验）\n")
     parts.append("S_safe 为分级函数，28 °C 线按“暴露检验”报告：等待人群中处于 ≤28 °C 区域的占比。")
-    parts.append("| 推荐方案 | Zone WBGT (°C) | Ambient WBGT (°C) | 人群 ≤28 °C 占比 | 结果 |")
+    parts.append("| 候选方案 | Zone WBGT (°C) | Ambient WBGT (°C) | 人群 ≤28 °C 占比 | 结果 |")
     parts.append("|---|---:|---:|---:|---|")
     recs = [("Phoenix bus — 1× MC37V", "PHX", "bus", "MC37V", 1),
             ("Phoenix rail — 1× MC61V", "PHX", "rail", "MC61V", 1),
@@ -101,7 +101,7 @@ def main():
                      (label, row["wbgt"], row["wbgt_amb"], share * 100,
                       "通过" if share > 0.999 else "未通过"))
 
-    parts.append("\n## 关键对比（30 °C）\n")
+    parts.append("\n## 关键对比（33 °C）\n")
     def e(city, eq, n):
         return next(r for r in t4 if r["city"] == city and r["eq"] == eq and r["n"] == n)
     p37, p61, p2, h37, h61, hf, h2f = (e("PHX", "MC37V", 1), e("PHX", "MC61V", 1),

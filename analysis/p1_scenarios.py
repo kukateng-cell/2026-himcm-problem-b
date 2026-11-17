@@ -26,20 +26,20 @@ OVERLAP = 0.30
 def main():
     g = R.set_B()
     rows = {k: R.calc(k[0], k[1], k[2], 1) for k in [(c, v, u) for c in CITIES for v in VENUES for u in UNITS]}
-    base = {k: R.score(r, g, threshold=30.0) for k, r in rows.items()}
+    base = {k: R.score(r, g, threshold=33.0) for k, r in rows.items()}
 
     # (a) cost adders
     added = {}
     for (c, v, u), r in rows.items():
         r2 = dict(r)
         r2["lcc"] = r["lcc"] + INSTALL[(c, v)] / INSTALL_LIFE + LABOUR
-        added[(c, v, u)] = R.score(r2, g, threshold=30.0)
+        added[(c, v, u)] = R.score(r2, g, threshold=33.0)
 
     # (b) overlap on two-unit deployments
     two = {k: R.calc(k[0], "rail", k[1], 2) for k in [(c, u) for c in CITIES for u in UNITS]}
     overlap = {}
     for (c, u), r in two.items():
-        E, I, B, S = R.score(r, g, threshold=30.0)
+        E, I, B, S = R.score(r, g, threshold=33.0)
         phi2 = min(1.0, (1 - OVERLAP) * r["phi"] * 2) if r["phi"] < 1 else 1.0
         phi2 = min(1.0, (1 - OVERLAP) * (2 * r["A_cov"] / r["Az"]))
         ss = phi2 * R.sat(r["wbgt"]) + (1 - phi2) * R.sat(r["wbgt_amb"])

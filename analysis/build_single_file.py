@@ -1,4 +1,4 @@
-"""Build the single all-in-one docx deliverable.
+﻿"""Build the single all-in-one docx deliverable.
 
 The consolidated English paper (with its placeholder pages) plus one internal
 checklist page listing the items that are still unfilled.
@@ -14,8 +14,8 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.path.join(ROOT, "2026_HiMCM_ProblemB_Full_Paper_v1.1.docx")
-OUT = os.path.join(ROOT, "2026_HiMCM_ProblemB_Full_Paper_v1.1_AllInOne.docx")
+SRC = os.path.join(ROOT, "2026_HiMCM_ProblemB_Full_Paper_v1.2.docx")
+OUT = os.path.join(ROOT, "2026_HiMCM_ProblemB_Full_Paper_v1.2_AllInOne.docx")
 
 
 def set_font(run, size=10, bold=False, italic=False, color=None):
@@ -43,14 +43,14 @@ def main():
 
     para = doc.add_paragraph()
     r = para.add_run(
-        "这份单档 = 完整英文论文（20 页：Summary、Section 1–6、Figure 1–6、Appendix A、References 1–14）"
+        "这份单档 = 完整英文论文（23 页：Summary、Section 1–6、Figure 1–6、Appendix A/B、References 1–19）"
         "＋ 1 页内部清单（下面）。清单外的正文已无占位页。"
     )
     set_font(r, 9.5)
 
     items = [
-        ("队号", "封面仍是 Team [Team Number]；换成实际队号即可，其余（Summary、AI Report、Figures 1–6、页码、目录）均已完成。"),
-        ("再改正文时", "重跑 analysis/build_full_paper.py → WPS 导出 PDF → 按新 PDF 核一次目录（当前 18 页版已对齐）。"),
+        ("队号", "封面已是实际队号 19362；其余（Summary、AI Report、Figures 1–6、页码、目录）均已完成。"),
+        ("再改正文时", "重跑 analysis/build_full_paper.py → 导出 PDF → 按新 PDF 核一次目录（当前 23 页版已对齐）。"),
         ("交付前", "python analysis/qa_check.py → 导出 PDF → 删除本页。"),
     ]
     for title, body in items:

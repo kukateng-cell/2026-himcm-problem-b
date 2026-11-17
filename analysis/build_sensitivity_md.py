@@ -12,7 +12,7 @@ import recompute as R
 import sensitivity as S
 
 R.MODE = "pressure"
-R.THRESH = 30.0
+R.THRESH = 33.0
 
 COLS = [("PHX 1×37", ("PHX", "MC37V", 1)), ("PHX 1×61", ("PHX", "MC61V", 1)),
         ("PHX 2×37", ("PHX", "MC37V", 2)), ("HK 1×37", ("HK", "MC37V", 1)),
@@ -21,7 +21,7 @@ COLS = [("PHX 1×37", ("PHX", "MC37V", 1)), ("PHX 1×61", ("PHX", "MC61V", 1)),
 
 TITLE = """# 敏感性报告（固定分母版）
 
-**口径：** D1–D4 + P2 数据（压力修正湿球、30 °C、Set B、APS 2024 需量电价、HK BWS 0.179、EF 0.39）。
+**口径：** D1–D4 + P2 数据（压力修正湿球、33 °C、Set B、APS 2024 需量电价、HK BWS 0.179、EF 0.39）。
 **脚本：** `analysis/sensitivity.py`（固定基线分母；逐情境重算分母的旧结果已作废，见第 6 节）。
 **基准：** `analysis/recompute.py` 的 Table 4。
 **生成：** `python analysis/build_sensitivity_md.py`（本文件自动生成，勿手改数字）。
@@ -46,7 +46,7 @@ def main():
 
     # base option table
     lines = [TITLE]
-    lines.append("## 1. 基准 E（30 °C，Set B）\n")
+    lines.append("## 1. 基准 E（33 °C，Set B）\n")
     lines.append("| 方案 | φ | ΔT_eff | LCC | I_env | E |")
     lines.append("|---|---:|---:|---:|---:|---:|")
     for label, key in COLS:
@@ -95,10 +95,10 @@ def main():
     lines.append("- **结论：** 要求 100% 覆盖选 1× MC61V；接受 73% 覆盖、优先成本/节水选 1× MC37V。\n")
 
     lines.append("### 3.4 阈值 28/30\n")
-    lines.append("- 30 °C：PHX 全部达标；HK 蒸冷冷却区达标、风扇 30.15 °C 超标。")
-    lines.append("- 28 °C：HK 全部方案超标（28 °C 行的 E 普遍下降）。Table 6b 仍把 HK 公交亭 Safety/Eco 最优从 Fan 翻成 MC37V。")
-    lines.append("- 28 °C 行（固定分母）：HK 1×37 %.4f、HK 1×fan %.4f、HK 2×fan %.4f。\n"
+    lines.append("- 33 °C：所有推荐场地达标；30 °C 保守 screen 下 HK 风扇 29.27 °C 仍低于 screen。")
+    lines.append("- 28 °C：整条安全曲线移到 24–30 °C（不是只换标签），所有 E 下降；HK 1×37 %.4f、HK 1×fan %.4f、HK 2×fan %.4f。"
                  % (E("threshold=28", ("HK", "MC37V", 1)), E("threshold=28", ("HK", "Fan", 1)), E("threshold=28", ("HK", "Fan", 2))))
+    lines.append("- Table 6b 是 exposure check（多少人 ≤28 °C），不是 28 °C 下的重新排名；两者不要混用。\n")
 
     lines.append("### 3.5 数据年份与 BWS\n")
     lines.append("- HK BWS 0.850（旧值）：HK 1×37 %.4f vs fan %.4f，排序不变。"
@@ -111,7 +111,8 @@ def main():
     lines.append("1. **κ_jet ≥ ~60**：HK 站台 1× 风扇反超 1× MC37V（κ=60：fan %.4f vs %.4f）。" % (E("kappa=60", ("HK", "Fan", 1)), E("kappa=60", ("HK", "MC37V", 1))))
     lines.append("2. **MC37V 实际覆盖 > ~105 m²**：A_cov +20%% 时 PHX 1×37 %.4f > 1×61 %.4f。" % (E(a_hi, ("PHX", "MC37V", 1)), E(a_hi, ("PHX", "MC61V", 1))))
     lines.append("3. **Drum Fan 性能明显更好**（CFM↑、价格↓、功率↓）：HK 公交亭/站台可能偏向风扇；当前是 hypothetical benchmark。")
-    lines.append("4. **28 °C 作为主口径**：HK 公交亭 Safety/Eco 翻成 MC37V；HK 站台仍 MC37V。")
+    lines.append("4. **28 °C 作为主口径**：HK 公交亭从 Fan 翻成 MC37V（%.4f vs %.4f）；HK 站台仍 MC37V。"
+                 % (E("threshold=28", ("HK", "MC37V", 1)), E("threshold=28", ("HK", "Fan", 1))))
     lines.append("5. **HK BWS 回到 0.850**：不改变 HK 站台排序，但削弱蒸冷环境优势。\n")
 
     g_min = min(gap_phx, key=lambda x: x[1])[1]
@@ -121,8 +122,8 @@ def main():
         "> The ranking of the two full-coverage Phoenix options (1× MC61V vs 2× MC37V) is robust to "
         "±30%% changes in lifetime, maintenance, water use, prices, EF, BWS and γ: 1× MC61V remains higher "
         "by %.3f–%.3f E-points. The Hong Kong rail-station choice between one MC37V and one drum fan is a "
-        "near-tie (E %.4f vs %.4f); it flips when the jet-mixing coefficient is raised from 45 to 60 s/m "
-        "(fan %.4f vs %.4f). The bus-shelter fan recommendation is robust at 30 °C but becomes MC37V under "
+        "near-tie (E %.4f vs %.4f); the two cross at κ ≈ 65 (at κ = 60 MC37V still leads; "
+        "fan %.4f vs %.4f). The bus-shelter fan recommendation is robust at 33 °C but becomes MC37V under "
         "the stricter 28 °C non-acclimatised limit. All sensitivity runs hold the baseline normalisers fixed.\n"
         % (g_min, g_max,
            base[("HK", "MC37V", 1)]["E"], base[("HK", "Fan", 1)]["E"],

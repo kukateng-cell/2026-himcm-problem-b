@@ -28,6 +28,9 @@ import math
 import os
 
 KAPPA = 45.0
+KAPPA_V = {"bus": 84.0, "rail": 45.0}   # v1.3: venue-specific jet-mixing coefficient
+OVERLAP = 0.30                              # v1.3: two-unit jet overlap
+FAN_CAP = 3.0                               # v1.3: prompt's 'up to 3 C' felt-cooling cap
 GPSY = 0.665
 CP = 1.006          # kJ/(kg K)
 LV = 2450.0         # kJ/kg
@@ -43,7 +46,7 @@ EQUIPMENT = {
 CITY = {
     "PHX": dict(T=41.0, RH=18.0, v=1.8, pe=0.1595, pw=2.0766, EF=0.303, BWS=2.482,
                 H=1440, psurf=950.0, Aplat=425.0),
-    "HK":  dict(T=32.5, RH=78.0, v=1.5, pe=0.1923, pw=0.9615, EF=0.390, BWS=0.179,
+    "HK":  dict(T=31.7, RH=77.0, v=1.5, pe=0.1923, pw=0.9615, EF=0.390, BWS=0.179,
                 H=1200, psurf=1000.0, Aplat=128.0),
 }
 
@@ -112,9 +115,12 @@ def calc(city, venue, eq, n=1, wetbulb="pressure", eqtable=None):
     eamb = es(c["T"]) * c["RH"] / 100
     ez = min(es(Tz), eamb + GPSY * (1 - v["g"]) * dTphys)
     Q = e["CFM"] * 1.699 / 3600
-    veff = c["v"] + KAPPA * Q / e["A"]
+    kappa = KAPPA_V.get(venue, KAPPA)
+    veff = c["v"] + kappa * Q / e["A"]
     dTeff = tapp(c["T"], eamb, c["v"]) - tapp(Tz, ez, veff)
-    phi = min(1.0, n * e["A"] / Az)
+    if e["eps"] == 0:
+        dTeff = min(dTeff, FAN_CAP)
+    phi = min(1.0, n * e["A"] * (1 - OVERLAP * (n - 1)) / Az)
 
     rho = c["psurf"] * 100 / (287.05 * (c["T"] + 273.15))
     mda = Q * rho
@@ -136,10 +142,16 @@ def calc(city, venue, eq, n=1, wetbulb="pressure", eqtable=None):
                 CFM=e["CFM"], A_cov=e["A"], eps=e["eps"], dTnom=e["dTnom"], Az=Az)
 
 
-def sat(wbgt, threshold=30.0):
-    """Graded heat-safety proxy: 1 at 26 C and below, 0 at 32 C and above,
-    anchored so that the 30 C reference line gives 1/3."""
-    return max(0.0, min(1.0, (32.0 - wbgt) / 6.0))
+def sat(wbgt, threshold=33.0):
+    """Graded heat-safety proxy anchored on the reference threshold.
+
+    The curve gives 1 at threshold-4, 0 at threshold+2 and 1/3 at the
+    reference line itself, i.e. S = clamp((threshold + 2 - W) / 6, 0, 1).
+    The paper's baseline is threshold = 33 C (29-35 C window; ISO 7243 115 W
+    light work).  Passing 30 C shifts the whole curve three degrees stricter
+    (26-32 C) for a vulnerable-population screen; 28 C is a further stress.
+    """
+    return max(0.0, min(1.0, (threshold + 2.0 - wbgt) / 6.0))
 
 
 def norm(rows):
@@ -156,7 +168,7 @@ def norm(rows):
     return out
 
 
-def score(r, g, w=(0.30, 0.30, 0.20, 0.20), threshold=30.0):
+def score(r, g, w=(0.30, 0.30, 0.20, 0.20), threshold=33.0):
     """E with population-weighted graded safety and per-venue normalisers."""
     gg = g[r["venue"]]
     N = VENUE[r["venue"]]["N"]
@@ -185,7 +197,7 @@ def set_B():
 
 
 MODE = "pressure"
-THRESH = 30.0
+THRESH = 33.0
 
 
 def table5_rows(wetbulb, threshold, norm_mode="B"):
@@ -230,7 +242,7 @@ def table6(rows5, g, threshold):
 
 def sweep_rh(threshold):
     out = []
-    for T in (41.0, 32.5):
+    for T in (41.0, 31.7):
         for venue, g in (("bus", 0.55), ("rail", 0.30)):
             lo, hi = 10.0, 99.0
             for _ in range(60):
@@ -262,7 +274,7 @@ def main():
     global MODE, THRESH, WATER_MODE, WATER_MULT
     ap = argparse.ArgumentParser()
     ap.add_argument("--wetbulb", choices=["pressure", "stull"], default="pressure")
-    ap.add_argument("--threshold", type=float, default=30.0)
+    ap.add_argument("--threshold", type=float, default=33.0)
     ap.add_argument("--vw", choices=["balance", "manufacturer"], default="balance")
     ap.add_argument("--csv", default="")
     args = ap.parse_args()

@@ -18,7 +18,7 @@ import sys
 import recompute as R
 
 R.MODE = "pressure"
-R.THRESH = 30.0
+R.THRESH = 33.0
 
 
 def kappa_from_jet():
@@ -62,7 +62,7 @@ def score_wind(r, g, cw, v_ref=0.5, w=(0.30, 0.30, 0.20, 0.20)):
 
 def wind_safe_table():
     g = baseline_norm()
-    rows, _ = R.table4_rows("pressure", 30.0)
+    rows, _ = R.table4_rows("pressure", 33.0)
     pick = {("HK", "MC37V"): None, ("HK", "Fan"): None,
             ("PHX", "MC37V"): None, ("PHX", "MC61V"): None}
     for r in rows:
@@ -76,7 +76,7 @@ def wind_safe_table():
 
 def cw_threshold():
     g = baseline_norm()
-    rows, _ = R.table4_rows("pressure", 30.0)
+    rows, _ = R.table4_rows("pressure", 33.0)
     hk = {r["eq"]: r for r in rows if r["city"] == "HK" and r["n"] == 1}
     def gap(cw):
         return score_wind(hk["MC37V"], g, cw) - score_wind(hk["Fan"], g, cw)
